@@ -1,0 +1,41 @@
+{
+  "name": "sths-web-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/app.js",
+  "scripts": {
+    "build": "tsc --p tsconfig.json",
+    "start": "node build/app.js",
+    "test": "mocha \"build/**/*.tests.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "sqlite3": "^3.1.8",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.5.0",
+    "@types/debug": "0.0.29",
+    "@types/dotenv": "^2.0.20",
+    "@types/express": "^4.0.35",
+    "@types/mocha": "^2.2.40",
+    "@types/node": "^7.0.12",
+    "@types/sqlite3": "^2.2.33",
+    "@types/supertest": "^2.0.0",
+    "@types/winston": "^2.3.0",
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-live-server": "0.0.30",
+    "gulp-mocha": "^4.3.0",
+    "gulp-tslint": "^8.0.0",
+    "gulp-typescript": "^3.1.6",
+    "gulp-watch": "^4.3.11",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2"
+  }
+}
