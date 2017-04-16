@@ -1,5 +1,5 @@
 import { DB } from '../../db/sqliteDb';
-import { QueryBuilder } from '../../db/queryBuilder';
+import { Query } from '../../db/query';
 import { Logger } from '../../common/logger';
 
 const log = new Logger('getLeagueLog');
@@ -20,7 +20,10 @@ export interface LeagueLogParams {
 }
 
 export function getLeagueLog(params: LeagueLogParams) {
-  const query = QueryBuilder.addLimitAndSkip(baseQuery, params.limit, params.skip);
+  const query = new Query(baseQuery)
+    .limit(params.limit)
+    .skip(params.skip)
+    .toString();
 
   log.debug(query);
 

@@ -1,5 +1,5 @@
 import { DB } from '../../db/sqliteDb';
-import { QueryBuilder} from '../../db/queryBuilder';
+import { Query } from '../../db/query';
 import { Logger } from '../../common/logger';
 
 const log = new Logger('getSkaterStats');
@@ -49,9 +49,11 @@ export function getSkaters(params: SkaterParams) {
     conditions.push(fromTeam(params.team));
   }
 
-  let query = QueryBuilder.addWhereClause(baseQuery, conditions);
-  query = QueryBuilder.formatQuery(query, proStatTable);
-  query = QueryBuilder.addLimitAndSkip(query, params.limit, params.skip);
+  const query = new Query(baseQuery)
+    .where(conditions)
+    .limit(params.limit)
+    .skip(params.skip)
+    .toFormattedString(proStatTable);
 
   log.debug(query);
 
