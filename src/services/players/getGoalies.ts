@@ -24,7 +24,7 @@ const hasPlayedMinimumGames = `
 const hasTeam = `(GoalerInfo.Team > 0)`;
 const hasSavePercentage = `(PCT > 0)`;
 
-export class GoalieParams {
+export interface GoalieParams {
   hasPlayedMinimumGames: boolean;
   hasTeam: boolean;
   hasSavePercentage: boolean;

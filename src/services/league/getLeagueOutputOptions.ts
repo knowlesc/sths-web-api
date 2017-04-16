@@ -9,7 +9,7 @@ const baseQuery = `
   FROM LeagueOutputOption
 `;
 
-export class LeagueOutputOptions {
+export interface LeagueOutputOptions {
   ProMinimumGamePlayerLeader: number;
   ShowFarmScoreinPHPHomePage: boolean;
   NumberofNewsinPHPHomePage: number;

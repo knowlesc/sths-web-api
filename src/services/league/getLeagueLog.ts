@@ -14,7 +14,7 @@ const baseQuery = `
   ORDER BY LeagueLog.Number DESC
 `;
 
-export class LeagueLogParams {
+export interface LeagueLogParams {
   skip: number;
   limit: number;
 }

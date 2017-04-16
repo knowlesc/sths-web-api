@@ -20,7 +20,7 @@ const hasPoints = `PlayerProStat.P > 0`;
 const hasTeam = `PlayerInfo.Team > 0`;
 const hasPlayedMinimumGames = `PlayerProStat.GP >= (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)`;
 
-export class SkaterParams {
+export interface SkaterParams {
   hasPlayedMinimumGames: boolean;
   hasTeam: boolean;
   hasPoints: boolean;

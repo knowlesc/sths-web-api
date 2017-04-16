@@ -9,7 +9,7 @@
     "cyclomatic-complexity": [true, 20],
     "forin": true,
     "indent": [true, "spaces"],
-    "interface-name": [true, "always-prefix"],
+    "interface-name": [true, "never-prefix"],
     "max-line-length": [true, 120],
     "new-parens": true,
     "newline-before-return": true,
