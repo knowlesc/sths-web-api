@@ -6,17 +6,21 @@ const limitClause = (limit: number) => limit ? `LIMIT ${limit}` : '';
 const skipClause = (skip: number) => skip ? `OFFSET ${skip}` : '';
 
 export class QueryBuilder {
-  static buildWhereClause(where: string[]): string {
-    if (where.length === 0) {
-      return '';
+  static addWhereClause(baseQuery, conditions: string[]): string {
+    let whereClause = '';
+    if (!conditions || conditions.length === 0) {
+      return baseQuery;
     }
 
-    const clause = where.map((w) => w ? '(' + w + ')\n' : '');
-    if (!clause) {
-      return '';
+    const wrappedConditions = conditions
+      .map((w) => w ? '(' + w + ')\n' : '')
+      .join('  AND ');
+
+    if (wrappedConditions) {
+      whereClause += 'WHERE ' + wrappedConditions;
     }
 
-    return 'WHERE\n' + clause.join('  AND ');
+    return `${baseQuery}\n${whereClause}`;
   }
 
   static buildQueryDynamic(...args: string[]): string {
@@ -33,7 +37,11 @@ export class QueryBuilder {
     return query;
   }
 
-  static buildQuery(query: string, limit: number, skip: number): string {
+  static addLimitAndSkip(query: string, limit: number, skip: number): string {
+    if (!limit) {
+      return query;
+    }
+
     return this.buildQueryDynamic(
       query,
       limitClause(limit),
@@ -42,8 +50,7 @@ export class QueryBuilder {
 
   static formatQuery(query: string, ...args: (string | number) []): string {
     let i = 0;
-
-    const regex = new RegExp('\\{' + i.toString() + '\\}', 'g');
+    let regex = new RegExp('\\{' + i.toString() + '\\}', 'g');
 
     while (regex.test(query)) {
       if (args[i] === undefined) {
@@ -51,7 +58,9 @@ export class QueryBuilder {
       }
 
       query = query.replace(regex, args[i].toString());
+
       i++;
+      regex = new RegExp('\\{' + i.toString() + '\\}', 'g');
     }
 
     return query;

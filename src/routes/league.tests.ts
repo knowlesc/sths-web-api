@@ -49,17 +49,5 @@ describe('league', () => {
           expect(response.body.length).to.eq(expectedNumberOfRows);
         });
     });
-
-    it('should retrieve all items if skip is set but limit is not set', () => {
-      const skip = 2;
-
-      return request(app)
-        .get('/league/log')
-        .query({ skip: skip })
-        .expect(200)
-        .then((response) => {
-          expect(response.body.length).to.eq(totalRowsInTable);
-        });
-    });
   });
 });

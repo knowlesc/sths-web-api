@@ -1,10 +1,10 @@
-import * as express from 'express';
 import * as dotenv from 'dotenv';
+dotenv.config();
+
+import * as express from 'express';
 import { leagueRoutes } from './routes/league';
 import { playersRoutes } from './routes/players';
 import { Logger } from './common/logger';
-
-dotenv.config();
 
 const log = new Logger('App');
 

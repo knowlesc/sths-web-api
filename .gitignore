@@ -36,4 +36,4 @@ node_modules/
 
 # built files
 build/
-test/**/*.test.js
+test/**/*.js

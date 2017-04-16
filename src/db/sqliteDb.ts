@@ -15,7 +15,9 @@ export class DB {
   }
 
   static init() {
-    const dbPath = process.env.NODE_ENV === 'test' ? process.env.TEST_DB_PATH : process.env.DB_PATH;
+    const dbPath = process.env.NODE_ENV === 'test' ?
+      process.env.TEST_DB_PATH : process.env.DB_PATH;
+
     if (!dbPath) {
       throw new Error('DB_PATH or TEST_DB_PATH environment variable not set correctly.');
     }

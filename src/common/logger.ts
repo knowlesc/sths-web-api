@@ -3,11 +3,12 @@ import * as winston from 'winston';
 const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({
-      level: 'info'
+      level: process.env.CONSOLE_LOG_LEVEL || 'info'
     }),
     new (winston.transports.File)({
       filename: 'app.log',
-      level: 'debug'
+      level: process.env.LOG_LEVEL || 'debug',
+      options: { flags: 'w' }
     })
   ]
 });

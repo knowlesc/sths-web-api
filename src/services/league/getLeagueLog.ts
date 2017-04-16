@@ -15,12 +15,12 @@ const baseQuery = `
 `;
 
 export interface LeagueLogParams {
-  skip: number;
-  limit: number;
+  skip?: number;
+  limit?: number;
 }
 
 export function getLeagueLog(params: LeagueLogParams) {
-  const query = QueryBuilder.buildQuery(baseQuery, params.limit, params.limit ? params.skip : null);
+  const query = QueryBuilder.addLimitAndSkip(baseQuery, params.limit, params.skip);
 
   log.debug(query);
 
