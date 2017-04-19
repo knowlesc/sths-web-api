@@ -29,6 +29,7 @@ export interface SkaterParams {
   hasPlayedMinimumGames?: string;
   hasTeam?: string;
   hasPoints?: string;
+  league?: string;
   team?: number;
   limit?: number;
   skip?: number;
@@ -49,11 +50,13 @@ export function getSkaters(params: SkaterParams) {
     conditions.push(fromTeam(params.team));
   }
 
+  const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+
   const query = new Query(baseQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
-    .toFormattedString(proStatTable);
+    .toFormattedString(statTableToUse);
 
   log.debug(query);
 

@@ -14,6 +14,7 @@ export function playersRoutes() {
       hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,
       hasPoints: req.query.hasPoints,
       hasTeam: req.query.hasTeam,
+      league: req.query.league,
       limit: req.query.limit,
       skip: req.query.skip,
       team: req.query.team
@@ -40,6 +41,7 @@ export function playersRoutes() {
       hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,
       hasSavePercentage: req.query.hasSavePercentage,
       hasTeam: req.query.hasTeam,
+      league: req.query.league,
       limit: req.query.limit,
       skip: req.query.skip,
       team: req.query.team

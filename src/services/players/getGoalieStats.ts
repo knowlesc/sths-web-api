@@ -35,6 +35,7 @@ export interface GoalieParams {
   hasTeam?: string;
   hasSavePercentage?: string;
   team?: number;
+  league?: string;
   limit?: number;
   skip?: number;
 }
@@ -54,11 +55,13 @@ export function getGoalies(params: GoalieParams) {
     conditions.push(fromTeam(params.team));
   }
 
+  const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+
   const query = new Query(baseQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
-    .toFormattedString(proStatTable);
+    .toFormattedString(statTableToUse);
 
   log.debug(query);
 

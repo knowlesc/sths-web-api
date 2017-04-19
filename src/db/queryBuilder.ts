@@ -1,7 +1,3 @@
-import { Logger } from '../common/logger';
-
-const log = new Logger('QueryBuilder');
-
 const limitClause = (limit: number) => limit ? `LIMIT ${limit}` : '';
 const skipClause = (skip: number) => skip ? `OFFSET ${skip}` : '';
 
