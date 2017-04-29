@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 app.use(leagueRoutes());
 app.use(playersRoutes());
 
-app.listen(3000, () => {
-  log.info('Listening on port 3000.');
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  log.info(`Listening on port ${port}.`);
 });
