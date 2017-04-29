@@ -5,13 +5,19 @@ import { Logger } from '../../common/logger';
 const log = new Logger('getSkaterStats');
 
 const shotPctFormula = `ROUND((CAST({0}.G AS REAL) / ({0}.Shots)) * 100, 2)`;
-const amgFormula = `ROUND((CAST({0}.SecondPlay AS REAL) / 60 / ({0}.GP)), 2)`;
+const toiPerGameFormula = `ROUND((CAST({0}.SecondPlay AS REAL) / ({0}.GP)), 2)`;
 const faceoffPctFormula = `ROUND((CAST({0}.FaceOffWon AS REAL) / ({0}.FaceOffTotal)) * 100, 2)`;
 const pointsPer60Formula = `ROUND((CAST({0}.P AS REAL) / ({0}.SecondPlay) * 60 * 60),2)`;
+const positionFormula = `CASE
+  WHEN PlayerInfo.PosC = 'True' THEN 'C'
+  WHEN PlayerInfo.PosLW = 'True' THEN 'LW'
+  WHEN PlayerInfo.PosRW = 'True' THEN 'RW'
+  WHEN PlayerInfo.PosD = 'True' THEN 'D'
+END`;
 
 const baseQuery = `
-  SELECT {0}.*, PlayerInfo.PosC, PlayerInfo.PosLW, PlayerInfo.PosRW, PlayerInfo.PosD,
-    PlayerInfo.TeamName, ${shotPctFormula} AS ShotsPCT, ${amgFormula} AS AMG,
+  SELECT {0}.*, ${positionFormula} as Position,
+    PlayerInfo.TeamName, ${shotPctFormula} AS ShotsPCT, ${toiPerGameFormula} AS AvgTOI,
     ${faceoffPctFormula} as FaceoffPCT, ${pointsPer60Formula} AS P60
   FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
 `;
