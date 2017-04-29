@@ -17,6 +17,7 @@ export function playersRoutes() {
       league: req.query.league,
       limit: req.query.limit,
       skip: req.query.skip,
+      sort: req.query.sort,
       team: req.query.team
     };
 

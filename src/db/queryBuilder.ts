@@ -1,5 +1,6 @@
 const limitClause = (limit: number) => limit ? `LIMIT ${limit}` : '';
 const skipClause = (skip: number) => skip ? `OFFSET ${skip}` : '';
+const orderByClause = (field: string, order: 'ASC' | 'DESC') => `ORDER BY ${field} ${order}`;
 
 export class QueryBuilder {
   static addWhereClause(baseQuery, conditions: string[]): string {
@@ -31,6 +32,18 @@ export class QueryBuilder {
     }
 
     return query;
+  }
+
+  static addOrderBy(query: string, sort: string, descending?: boolean): string {
+    if (!sort) {
+      return query;
+    }
+
+    const order = descending ? 'DESC' : 'ASC';
+
+    return this.buildQueryDynamic(
+      query,
+      orderByClause(sort, order));
   }
 
   static addLimitAndSkip(query: string, limit: number, skip: number): string {
