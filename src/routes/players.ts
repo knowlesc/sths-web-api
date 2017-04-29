@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { SkaterParams, getSkaters } from '../services/players/getSkaterStats';
+import { getSkaters, getSkatersCount } from '../services/players/getSkaterStats';
+import { SkaterParams } from '../models/players/skaterParams';
 import { GoalieParams, getGoalies } from '../services/players/getGoalieStats';
 import { Logger } from '../common/logger';
 
@@ -22,11 +23,12 @@ export function playersRoutes() {
     };
 
     try {
-      getSkaters(params)
-        .then((results) => {
-            res.send(results);
-          },
-          (err) => {
+      Promise.all([getSkaters(params), getSkatersCount(params)])
+        .then(([skaters, count]) => {
+            const totalResults = (count as { count: string }[])[0].count;
+            res.setHeader('X-Total-Count', totalResults);
+            res.send(skaters);
+          }, (err) => {
             log.error(err);
             res.status(500).send('Error retrieving players.');
           });

@@ -7,7 +7,8 @@
     "build": "tsc --p tsconfig.json",
     "start": "node build/app.js",
     "test": "mocha \"build/**/*.tests.js\"",
-    "createTestDb": "tsc test/createTestDb.ts && node test/createTestDb.js"
+    "createTestDb": "tsc test/createTestDb.ts && node test/createTestDb.js",
+    "postinstall": "tsc --p tsconfig.json"
   },
   "author": "",
   "license": "ISC",

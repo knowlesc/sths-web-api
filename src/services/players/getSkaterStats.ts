@@ -22,6 +22,11 @@ const baseQuery = `
   FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
 `;
 
+const totalResultsQuery = `
+  SELECT count(*) as count
+  FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
+`;
+
 const fromTeam = (teamId: number) => `PlayerInfo.Team = ${teamId}`;
 
 const hasPoints = `{0}.P > 0`;
@@ -108,6 +113,32 @@ export function getSkaters(params: SkaterParams) {
     .limit(params.limit)
     .skip(params.skip)
     .orderBy(sort.field, sort.descending)
+    .toFormattedString(statTableToUse);
+
+  log.debug(query);
+
+  return DB.all(query);
+}
+
+export function getSkatersCount(params: SkaterParams) {
+  const conditions = [];
+  if (params.hasPlayedMinimumGames === 'true') {
+    conditions.push(hasPlayedMinimumGames);
+  }
+  if (params.hasPoints === 'true') {
+    conditions.push(hasPoints);
+  }
+  if (params.hasTeam === 'true') {
+    conditions.push(hasTeam);
+  }
+  if (params.team) {
+    conditions.push(fromTeam(params.team));
+  }
+
+  const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+
+  const query = new Query(totalResultsQuery)
+    .where(conditions)
     .toFormattedString(statTableToUse);
 
   log.debug(query);
