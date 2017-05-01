@@ -1,25 +1,22 @@
-import { DB } from '../../db/sqliteDb';
-import { Logger } from '../../common/logger';
+import { QueryRunner } from '../../db/queryRunner';
+import { Query } from '../../db/query';
 
-const log = new Logger('getLeagueOutputOptions');
-
-const baseQuery = `
+const selectQuery = `
   SELECT ProMinimumGamePlayerLeader, ShowFarmScoreinPHPHomePage,
     NumberofNewsinPHPHomePage, NumberofLatestScoreinPHPHomePage
-  FROM LeagueOutputOption
 `;
 
-export interface LeagueOutputOptions {
+const fromQuery = `FROM LeagueOutputOption`;
+
+export interface LeagueOutputParams {
   ProMinimumGamePlayerLeader: number;
   ShowFarmScoreinPHPHomePage: boolean;
   NumberofNewsinPHPHomePage: number;
   NumberofLatestScoreinPHPHomePage: number;
 }
 
-export function getLeagueOutputOptions(): Promise<LeagueOutputOptions> {
-  const query = baseQuery;
+export function getLeagueOutputOptions(): Promise<LeagueOutputParams> {
+  const query = new Query(selectQuery, fromQuery);
 
-  log.debug(query);
-
-  return DB.get(query);
+  return QueryRunner.runQuerySingle(query);
 }

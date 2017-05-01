@@ -1,37 +1,8 @@
-import { DB } from '../../db/sqliteDb';
+import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
-import { Logger } from '../../common/logger';
-
-const log = new Logger('getSkaterStats');
-
-const shotPctFormula = `ROUND((CAST({0}.G AS REAL) / ({0}.Shots)) * 100, 2)`;
-const toiPerGameFormula = `ROUND((CAST({0}.SecondPlay AS REAL) / ({0}.GP)), 2)`;
-const faceoffPctFormula = `ROUND((CAST({0}.FaceOffWon AS REAL) / ({0}.FaceOffTotal)) * 100, 2)`;
-const pointsPer60Formula = `ROUND((CAST({0}.P AS REAL) / ({0}.SecondPlay) * 60 * 60),2)`;
-const positionFormula = `CASE
-  WHEN PlayerInfo.PosC = 'True' THEN 'C'
-  WHEN PlayerInfo.PosLW = 'True' THEN 'LW'
-  WHEN PlayerInfo.PosRW = 'True' THEN 'RW'
-  WHEN PlayerInfo.PosD = 'True' THEN 'D'
-END`;
-
-const baseQuery = `
-  SELECT {0}.*, ${positionFormula} as Position,
-    PlayerInfo.TeamName, ${shotPctFormula} AS ShotsPCT, ${toiPerGameFormula} AS AvgTOI,
-    ${faceoffPctFormula} as FaceoffPCT, ${pointsPer60Formula} AS P60
-  FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
-`;
-
-const totalResultsQuery = `
-  SELECT count(*) as count
-  FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
-`;
-
-const fromTeam = (teamId: number) => `PlayerInfo.Team = ${teamId}`;
-
-const hasPoints = `{0}.P > 0`;
-const hasTeam = `PlayerInfo.Team > 0`;
-const hasPlayedMinimumGames = `{0}.GP >= (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)`;
+import { SkaterParams } from '../../models/players/skaterParams';
+import { SortHelper } from '../sortHelper';
+import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
 
 const proStatTable = 'PlayerProStat';
 const farmStatTable = 'PlayerFarmStat';
@@ -39,7 +10,7 @@ const farmStatTable = 'PlayerFarmStat';
 const sortablePlayerInfoFields = ['TeamName'];
 const sortableCustomFields = ['Position', 'AvgTOI', 'ShotsPCT', 'P60'];
 const sortableStatFields = ['Number', 'Name', 'GP', 'G', 'A', 'P',
-  'PlusMinus', 'PIM', 'Hits', 'Shots', 'ShotsBlock', 'PPG', 'PPA', 'PPP'];
+    'PlusMinus', 'PIM', 'Hits', 'Shots', 'ShotsBlock', 'PPG', 'PPA', 'PPP'];
 
 const allowedSortFields = sortablePlayerInfoFields
   .concat(sortableCustomFields)
@@ -47,101 +18,53 @@ const allowedSortFields = sortablePlayerInfoFields
 
 const transformSortField = (field: string, statTable: string):
   { field: string, descending: boolean } => {
-  if (!validateSort(field)) {
-    return { field: null, descending: false };
+  const sort = SortHelper.validateAndConvertSort(field, allowedSortFields);
+
+  if (sort.field) {
+    let fieldWithTablePrefix = sort.field;
+    if (sortablePlayerInfoFields.indexOf(sort.field) >= 0) {
+      fieldWithTablePrefix = `PlayerInfo.${sort.field}`;
+    } else if (sortableStatFields.indexOf(sort.field) >= 0) {
+      fieldWithTablePrefix = `${statTable}.${sort.field}`;
+    }
+
+    sort.field = fieldWithTablePrefix;
   }
 
-  let descending = false;
-  if (field[0] === '-') {
-    field = field.substring(1);
-    descending = true;
-  }
-
-  let fieldWithTablePrefix = field;
-  if (sortablePlayerInfoFields.indexOf(field) >= 0) {
-    fieldWithTablePrefix = `PlayerInfo.${field}`;
-  } else if (sortableStatFields.indexOf(field) >= 0) {
-    fieldWithTablePrefix = `${statTable}.${field}`;
-  }
-
-  return { field: fieldWithTablePrefix, descending: descending };
+  return sort;
 };
 
-const validateSort = (field: string) => {
-  if (!field) {
-    return false;
-  }
+const getWhereConditions = (params: SkaterParams) => {
+  const conditions = [];
 
-  if (field[0] === '-') {
-    return allowedSortFields.indexOf(field.substring(1)) >= 0;
-  } else {
-    return allowedSortFields.indexOf(field) >= 0;
-  }
+  if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
+  if (params.hasPoints === 'true') { conditions.push(Queries.hasPoints); }
+  if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
+  if (params.team) { conditions.push(Queries.fromTeam(params.team)); }
+
+  return conditions;
 };
-
-export interface SkaterParams {
-  hasPlayedMinimumGames?: string;
-  hasTeam?: string;
-  hasPoints?: string;
-  league?: string;
-  team?: number;
-  limit?: number;
-  skip?: number;
-  sort?: string;
-}
 
 export function getSkaters(params: SkaterParams) {
-  const conditions = [];
-  if (params.hasPlayedMinimumGames === 'true') {
-    conditions.push(hasPlayedMinimumGames);
-  }
-  if (params.hasPoints === 'true') {
-    conditions.push(hasPoints);
-  }
-  if (params.hasTeam === 'true') {
-    conditions.push(hasTeam);
-  }
-  if (params.team) {
-    conditions.push(fromTeam(params.team));
-  }
-
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const conditions = getWhereConditions(params);
   const sort = transformSortField(params.sort, statTableToUse);
 
-  const query = new Query(baseQuery)
+  const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
-    .orderBy(sort.field, sort.descending)
-    .toFormattedString(statTableToUse);
+    .orderBy(sort.field, sort.descending);
 
-  log.debug(query);
-
-  return DB.all(query);
+  return QueryRunner.runQuery(query, statTableToUse);
 }
 
 export function getSkatersCount(params: SkaterParams) {
-  const conditions = [];
-  if (params.hasPlayedMinimumGames === 'true') {
-    conditions.push(hasPlayedMinimumGames);
-  }
-  if (params.hasPoints === 'true') {
-    conditions.push(hasPoints);
-  }
-  if (params.hasTeam === 'true') {
-    conditions.push(hasTeam);
-  }
-  if (params.team) {
-    conditions.push(fromTeam(params.team));
-  }
-
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const conditions = getWhereConditions(params);
 
-  const query = new Query(totalResultsQuery)
-    .where(conditions)
-    .toFormattedString(statTableToUse);
+  const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
+    .where(conditions);
 
-  log.debug(query);
-
-  return DB.all(query);
+  return QueryRunner.runQuery(query, statTableToUse);
 }

@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { getSkaters, getSkatersCount } from '../services/players/getSkaterStats';
+import { getGoalies } from '../services/players/getGoalieStats';
 import { SkaterParams } from '../models/players/skaterParams';
-import { GoalieParams, getGoalies } from '../services/players/getGoalieStats';
+import { GoalieParams } from '../models/players/goalieParams';
 import { Logger } from '../common/logger';
 
 const log = new Logger('playersRoutes');

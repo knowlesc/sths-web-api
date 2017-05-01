@@ -2,19 +2,22 @@ import { QueryBuilder } from './queryBuilder';
 
 export class Query {
   query: string;
+  from: string;
   conditions: string[];
   sort: string;
   sortDescending: boolean;
   _limit: number;
   _skip: number;
 
-  constructor(base: string) {
+  constructor(base: string, from: string) {
     this.query = base;
+    this.from = from;
     this.conditions = [];
   }
 
   toString(): string {
-    let queryString = QueryBuilder.addWhereClause(this.query, this.conditions);
+    let queryString = QueryBuilder.buildQueryDynamic(this.query, this.from);
+    queryString = QueryBuilder.addWhereClause(queryString, this.conditions);
     queryString = QueryBuilder.addOrderBy(queryString, this.sort, this.sortDescending);
     queryString = QueryBuilder.addLimitAndSkip(queryString, this._limit, this._skip);
 
@@ -66,7 +69,7 @@ export class Query {
   }
 
   private copy() {
-    const other = new Query(this.query);
+    const other = new Query(this.query, this.from);
     other.conditions = this.conditions;
     other._limit = this._limit;
     other._skip = this._skip;

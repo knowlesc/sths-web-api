@@ -1,4 +1,4 @@
-export class PlayerStats {
+export class SkaterStats {
   Number: number;
   UniqueID: number;
   Name: string;
