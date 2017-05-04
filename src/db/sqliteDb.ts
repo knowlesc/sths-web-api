@@ -23,8 +23,6 @@ export class DB {
     }
 
     this.db = new sqlite3.Database(dbPath);
-
-    console.log(this.db);
   }
 
   static get(query: string): Promise<{}> {
