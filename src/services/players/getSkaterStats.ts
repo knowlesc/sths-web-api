@@ -6,15 +6,14 @@ import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
 
 const proStatTable = 'PlayerProStat';
 const farmStatTable = 'PlayerFarmStat';
+const proTeamTable = 'TeamProInfo';
+const farmTeamTable = 'TeamFarmInfo';
 
-const sortablePlayerInfoFields = ['TeamName'];
-const sortableCustomFields = ['Position', 'AvgTOI', 'ShotsPCT', 'P60'];
+const sortableCustomFields = ['Position', 'AvgTOI', 'ShotsPCT', 'P60', 'TeamAbbre'];
 const sortableStatFields = ['Number', 'Name', 'GP', 'G', 'A', 'P',
     'PlusMinus', 'PIM', 'Hits', 'Shots', 'ShotsBlock', 'PPG', 'PPA', 'PPP'];
 
-const allowedSortFields = sortablePlayerInfoFields
-  .concat(sortableCustomFields)
-  .concat(sortableStatFields);
+const allowedSortFields = sortableCustomFields.concat(sortableStatFields);
 
 const transformSortField = (field: string, statTable: string):
   { field: string, descending: boolean } => {
@@ -22,9 +21,7 @@ const transformSortField = (field: string, statTable: string):
 
   if (sort.field) {
     let fieldWithTablePrefix = sort.field;
-    if (sortablePlayerInfoFields.indexOf(sort.field) >= 0) {
-      fieldWithTablePrefix = `PlayerInfo.${sort.field}`;
-    } else if (sortableStatFields.indexOf(sort.field) >= 0) {
+    if (sortableStatFields.indexOf(sort.field) >= 0) {
       fieldWithTablePrefix = `${statTable}.${sort.field}`;
     }
 
@@ -47,6 +44,7 @@ const getWhereConditions = (params: SkaterParams) => {
 
 export function getSkaters(params: SkaterParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
   const sort = transformSortField(params.sort, statTableToUse);
 
@@ -56,15 +54,16 @@ export function getSkaters(params: SkaterParams) {
     .skip(params.skip)
     .orderBy(sort.field, sort.descending);
 
-  return QueryRunner.runQuery(query, statTableToUse);
+  return QueryRunner.runQuery(query, statTableToUse, teamTableToUse);
 }
 
 export function getSkatersCount(params: SkaterParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
 
   const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
-  return QueryRunner.runQuery(query, statTableToUse);
+  return QueryRunner.runQuery(query, statTableToUse, teamTableToUse);
 }

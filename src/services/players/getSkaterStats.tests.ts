@@ -97,7 +97,7 @@ describe('getSkaterStats', () => {
 
       const testData: { sort: string; expectedSort: string; shouldBeDescending: boolean; }[] =
         [
-          { sort: 'TeamName', expectedSort: 'PlayerInfo.TeamName', shouldBeDescending: false },
+          { sort: 'TeamAbbre', expectedSort: 'TeamAbbre', shouldBeDescending: false },
           { sort: '-Position', expectedSort: 'Position', shouldBeDescending: true },
           { sort: '-Number', expectedSort: 'PlayerProStat.Number', shouldBeDescending: true }
         ];

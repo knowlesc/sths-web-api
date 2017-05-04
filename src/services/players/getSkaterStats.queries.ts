@@ -12,7 +12,8 @@ export class GetSkaterStatsQueries {
 
   // SELECT
   static allFieldsQuery = `
-    SELECT {0}.*, PlayerInfo.TeamName,
+    SELECT {0}.*,
+      {1}.Abbre as TeamAbbre,
       ${GetSkaterStatsQueries.positionFormula} as Position,
       ${GetSkaterStatsQueries.shotPctFormula} AS ShotsPCT,
       ${GetSkaterStatsQueries.toiPerGameFormula} AS AvgTOI,
@@ -26,7 +27,9 @@ export class GetSkaterStatsQueries {
 
   // FROM
   static fromQuery = `
-    FROM PlayerInfo INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
+    FROM PlayerInfo
+      INNER JOIN {0} ON PlayerInfo.Number = {0}.Number
+      INNER JOIN {1} ON PlayerInfo.Team = {1}.Number
   `;
 
   // WHERE

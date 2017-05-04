@@ -51,7 +51,7 @@ export class SkaterStats {
   StarPowerGoal30Days: number;
   StarPowerAssist30Days: number;
   Position: string;
-  TeamName: string;
+  TeamAbbre: string;
   ShotsPCT: number;
   AvgTOI: number;
   FaceoffPCT: number;
