@@ -4,6 +4,7 @@ dotenv.config();
 import * as express from 'express';
 import { leagueRoutes } from './routes/league';
 import { playersRoutes } from './routes/players';
+import { teamsRoutes } from './routes/teams';
 import { Logger } from './common/logger';
 
 const log = new Logger('App');
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use(leagueRoutes());
 app.use(playersRoutes());
+app.use(teamsRoutes());
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
