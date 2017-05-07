@@ -10,7 +10,11 @@ export class QueryRunner {
     return DB.all(queryString);
   }
 
-  static runQuerySingle(query: Query) {
-    return DB.get(query.toString());
+  static runQuerySingle(query: Query, ...args: string[]) {
+    const queryString = (args && args.length > 0) ?
+      query.toFormattedString(...args) :
+      query.toString();
+
+    return DB.get(queryString);
   }
 }

@@ -43,7 +43,6 @@
     "no-unsafe-finally": true,
     "no-var-keyword": true,
     "no-var-requires": true,
-    "object-literal-sort-keys": true,
     "one-line": [true, "check-open-brace", "check-whitespace", "check-else", "check-catch", "check-finally"],
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "only-arrow-functions": [true, "allow-named-functions"],
