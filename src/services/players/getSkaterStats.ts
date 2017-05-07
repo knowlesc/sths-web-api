@@ -1,6 +1,6 @@
 import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
-import { SkaterParams } from '../../models/players/skaterParams';
+import { SkaterStatsParams } from '../../models/players/skaterStatsParams';
 import { SortHelper } from '../sortHelper';
 import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
 
@@ -31,7 +31,7 @@ const transformSortField = (field: string, statTable: string):
   return sort;
 };
 
-const getWhereConditions = (params: SkaterParams) => {
+const getWhereConditions = (params: SkaterStatsParams) => {
   const conditions = [];
 
   if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
@@ -42,7 +42,7 @@ const getWhereConditions = (params: SkaterParams) => {
   return conditions;
 };
 
-export function getSkaters(params: SkaterParams) {
+export function getSkaters(params: SkaterStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
@@ -57,7 +57,7 @@ export function getSkaters(params: SkaterParams) {
   return QueryRunner.runQuery(query, statTableToUse, teamTableToUse);
 }
 
-export function getSkatersCount(params: SkaterParams) {
+export function getSkatersCount(params: SkaterStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);

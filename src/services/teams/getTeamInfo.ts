@@ -2,7 +2,7 @@ import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
 import { TeamInfoParams } from '../../models/teams/teamInfoParams';
 
-const selectListFieldsQuery = `SELECT Abbre, Name`;
+const selectListFieldsQuery = `SELECT UniqueID, Abbre, Name`;
 const selectAllFieldsQuery = `SELECT *`;
 const fromQuery = `FROM {0}`;
 
@@ -10,7 +10,7 @@ const farmTable = 'TeamFarmInfo';
 const proTable = 'TeamProInfo';
 
 const getWhereConditions = (params: TeamInfoParams) => {
-  const conditions = [`Abbre = '${params.id}'`];
+  const conditions = [`UniqueID = '${parseInt(params.id)}'`];
 
   return conditions;
 };
@@ -25,7 +25,7 @@ export function getTeamList(params: TeamInfoParams) {
 }
 
 export function getTeamInfo(params: TeamInfoParams) {
-  if (!params.id || !/[A-Z][A-Z][A-Z]/.test(params.id)) {
+  if (isNaN(parseInt(params.id))) {
     throw new Error('Missing or invalid team ID.');
   }
 

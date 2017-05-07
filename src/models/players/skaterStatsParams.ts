@@ -1,4 +1,4 @@
-export interface SkaterParams {
+export interface SkaterStatsParams {
   hasPlayedMinimumGames?: string;
   hasTeam?: string;
   hasPoints?: string;

@@ -2,7 +2,7 @@ import { Query } from '../../db/query';
 import { QueryRunner } from '../../db/queryRunner';
 import { getSkaters, getSkatersCount } from './getSkaterStats';
 import { GetSkaterStatsQueries } from './getSkaterStats.queries';
-import { SkaterParams } from '../../models/players/skaterParams';
+import { SkaterStatsParams } from '../../models/players/skaterStatsParams';
 
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -10,7 +10,7 @@ import 'sinon-chai';
 
 const totalRowsInTable = 10; // See test/scripts/generate-test-data.sql
 
-let skaterParams: SkaterParams;
+let skaterParams: SkaterStatsParams;
 
 describe('getSkaterStats', () => {
   let spy: sinon.SinonStub;
