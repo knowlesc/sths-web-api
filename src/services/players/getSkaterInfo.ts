@@ -10,7 +10,6 @@ const allowedSortFields = ['Position', 'TeamAbbre', 'Condition', 'CK', 'FG', 'DI
 
 const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];
-
   const league = params.league === 'farm' ? 'farm' : 'pro';
 
   if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }

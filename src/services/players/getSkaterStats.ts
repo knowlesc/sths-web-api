@@ -33,8 +33,10 @@ const transformSortField = (field: string, statTable: string):
 
 const getWhereConditions = (params: SkaterStatsParams) => {
   const conditions = [];
+  const league = params.league === 'farm' ? 'farm' : 'pro';
 
   if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
+  if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasPoints === 'true') { conditions.push(Queries.hasPoints); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
   if (params.team) { conditions.push(Queries.fromTeam(params.team)); }
