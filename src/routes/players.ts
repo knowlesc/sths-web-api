@@ -1,10 +1,12 @@
 import * as express from 'express';
-import { getSkaters, getSkatersCount } from '../services/players/getSkaterStats';
+import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats';
 import { getSkaterInfo, getSkaterInfoCount } from '../services/players/getSkaterInfo';
-import { getGoalies } from '../services/players/getGoalieStats';
+import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats';
+import { getGoalieInfo, getGoalieInfoCount } from '../services/players/getGoalieInfo';
 import { SkaterStatsParams } from '../models/players/skaterStatsParams';
 import { SkaterInfoParams } from '../models/players/skaterInfoParams';
-import { GoalieParams } from '../models/players/goalieParams';
+import { GoalieStatsParams } from '../models/players/goalieStatsParams';
+import { GoalieInfoParams } from '../models/players/goalieInfoParams';
 import { Logger } from '../common/logger';
 
 const log = new Logger('playersRoutes');
@@ -40,6 +42,34 @@ export function playersRoutes() {
     }
   });
 
+  app.get('/players/goalies', (req: express.Request, res: express.Response) => {
+
+    const params: GoalieInfoParams = {
+      hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,
+      hasTeam: req.query.hasTeam,
+      league: req.query.league,
+      limit: req.query.limit,
+      skip: req.query.skip,
+      sort: req.query.sort,
+      team: req.query.team
+    };
+
+    try {
+      Promise.all([getGoalieInfo(params), getGoalieInfoCount(params)])
+        .then(([goalies, count]) => {
+            const totalResults = (count as { count: string }[])[0].count;
+            res.setHeader('X-Total-Count', totalResults);
+            res.send(goalies);
+          }, (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving players.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving players.');
+    }
+  });
+
   app.get('/players/skaters/stats', (req: express.Request, res: express.Response) => {
 
     const params: SkaterStatsParams = {
@@ -54,7 +84,7 @@ export function playersRoutes() {
     };
 
     try {
-      Promise.all([getSkaters(params), getSkatersCount(params)])
+      Promise.all([getSkaterStats(params), getSkaterStatsCount(params)])
         .then(([skaters, count]) => {
             const totalResults = (count as { count: string }[])[0].count;
             res.setHeader('X-Total-Count', totalResults);
@@ -71,20 +101,23 @@ export function playersRoutes() {
 
   app.get('/players/goalies/stats', (req: express.Request, res: express.Response) => {
 
-    const params: GoalieParams = {
+    const params: GoalieStatsParams = {
       hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,
       hasSavePercentage: req.query.hasSavePercentage,
       hasTeam: req.query.hasTeam,
       league: req.query.league,
       limit: req.query.limit,
       skip: req.query.skip,
-      team: req.query.team
+      team: req.query.team,
+      sort: req.query.sort
     };
 
     try {
-      getGoalies(params)
-        .then((results) => {
-            res.send(results);
+      Promise.all([getGoalieStats(params), getGoalieStatsCount(params)])
+        .then(([goalies, count]) => {
+            const totalResults = (count as { count: string }[])[0].count;
+            res.setHeader('X-Total-Count', totalResults);
+            res.send(goalies);
           },
           (err) => {
             log.error(err);

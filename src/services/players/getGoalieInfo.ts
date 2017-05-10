@@ -1,14 +1,14 @@
 import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
-import { SkaterInfoParams } from '../../models/players/skaterInfoParams';
-import { GetSkaterInfoQueries as Queries } from './getSkaterInfo.queries';
+import { GoalieInfoParams } from '../../models/players/goalieInfoParams';
+import { GetGoalieInfoQueries as Queries } from './getGoalieInfo.queries';
 import { SortHelper } from '../sortHelper';
 
-const allowedSortFields = ['Name', 'Position', 'TeamAbbre', 'Condition', 'CK',
-  'FG', 'DI', 'SK', 'ST', 'EN', 'DU', 'PH', 'FO', 'PA', 'SC', 'DF', 'PS', 'EX',
-  'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower'];
+const allowedSortFields = ['Name', 'TeamAbbre', 'Condition', 'SK', 'DU', 'EN', 'SZ',
+  'AG', 'RB', 'SC', 'HS', 'RT', 'PH', 'PS', 'EX', 'LD', 'PO', 'MO', 'Overall',
+  'AvailableforTrade', 'StarPower'];
 
-const getWhereConditions = (params: SkaterInfoParams) => {
+const getWhereConditions = (params: GoalieInfoParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
 
@@ -19,7 +19,7 @@ const getWhereConditions = (params: SkaterInfoParams) => {
   return conditions;
 };
 
-export function getSkaterInfo(params: SkaterInfoParams) {
+export function getGoalieInfo(params: GoalieInfoParams) {
   const conditions = getWhereConditions(params);
   const sort = SortHelper.validateAndConvertSort(params.sort, allowedSortFields);
 
@@ -32,7 +32,7 @@ export function getSkaterInfo(params: SkaterInfoParams) {
   return QueryRunner.runQuery(query);
 }
 
-export function getSkaterInfoCount(params: SkaterInfoParams) {
+export function getGoalieInfoCount(params: GoalieInfoParams) {
   const conditions = getWhereConditions(params);
 
   const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)

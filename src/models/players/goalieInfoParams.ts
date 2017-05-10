@@ -1,9 +1,9 @@
-export interface GoalieParams {
+export interface GoalieInfoParams {
   hasPlayedMinimumGames?: string;
   hasTeam?: string;
-  hasSavePercentage?: string;
-  team?: number;
   league?: string;
+  team?: number;
   limit?: number;
   skip?: number;
+  sort?: string;
 }

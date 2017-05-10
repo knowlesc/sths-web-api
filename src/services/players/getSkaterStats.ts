@@ -44,7 +44,7 @@ const getWhereConditions = (params: SkaterStatsParams) => {
   return conditions;
 };
 
-export function getSkaters(params: SkaterStatsParams) {
+export function getSkaterStats(params: SkaterStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
@@ -59,7 +59,7 @@ export function getSkaters(params: SkaterStatsParams) {
   return QueryRunner.runQuery(query, statTableToUse, teamTableToUse);
 }
 
-export function getSkatersCount(params: SkaterStatsParams) {
+export function getSkaterStatsCount(params: SkaterStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);

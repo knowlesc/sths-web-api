@@ -1,6 +1,6 @@
 import { Query } from '../../db/query';
 import { QueryRunner } from '../../db/queryRunner';
-import { getSkaters, getSkatersCount } from './getSkaterStats';
+import { getSkaterStats, getSkaterStatsCount } from './getSkaterStats';
 import { GetSkaterStatsQueries } from './getSkaterStats.queries';
 import { SkaterStatsParams } from '../../models/players/skaterStatsParams';
 
@@ -28,7 +28,7 @@ describe('getSkaterStats', () => {
   describe('main query', () => {
 
     it('should succeed', () => {
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query._limit).not.to.exist;
@@ -42,7 +42,7 @@ describe('getSkaterStats', () => {
     it('should apply the limit param', () => {
       skaterParams.limit = 5;
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query._limit).to.equal(5);
@@ -51,7 +51,7 @@ describe('getSkaterStats', () => {
     it('should apply the skip param', () => {
       skaterParams.skip = 5;
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query._skip).to.equal(5);
@@ -60,7 +60,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasPlayedMinimumGames param', () => {
       skaterParams.hasPlayedMinimumGames = 'true';
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasPlayedMinimumGames);
@@ -69,7 +69,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasPoints param', () => {
       skaterParams.hasPoints = 'true';
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasPoints);
@@ -78,7 +78,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasTeam param', () => {
       skaterParams.hasTeam = 'true';
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasTeam);
@@ -87,7 +87,7 @@ describe('getSkaterStats', () => {
     it('should apply the team param', () => {
       skaterParams.team = 5;
 
-      getSkaters(skaterParams);
+      getSkaterStats(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.fromTeam(5));
@@ -106,7 +106,7 @@ describe('getSkaterStats', () => {
         it(`should apply sort param (case ${index})`, () => {
           skaterParams.sort = testCase.sort;
 
-          getSkaters(skaterParams);
+          getSkaterStats(skaterParams);
 
           const query = spy.getCalls()[0].args[0] as Query;
           expect(query.sort).to.equal(testCase.expectedSort);
@@ -119,7 +119,7 @@ describe('getSkaterStats', () => {
   describe('count query', () => {
 
     it('should succeed', () => {
-      getSkatersCount(skaterParams);
+      getSkaterStatsCount(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query._limit).not.to.exist;
@@ -133,7 +133,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasPlayedMinimumGames param', () => {
       skaterParams.hasPlayedMinimumGames = 'true';
 
-      getSkatersCount(skaterParams);
+      getSkaterStatsCount(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasPlayedMinimumGames);
@@ -142,7 +142,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasPoints param', () => {
       skaterParams.hasPoints = 'true';
 
-      getSkatersCount(skaterParams);
+      getSkaterStatsCount(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasPoints);
@@ -151,7 +151,7 @@ describe('getSkaterStats', () => {
     it('should apply the hasTeam param', () => {
       skaterParams.hasTeam = 'true';
 
-      getSkatersCount(skaterParams);
+      getSkaterStatsCount(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.hasTeam);
@@ -160,7 +160,7 @@ describe('getSkaterStats', () => {
     it('should apply the team param', () => {
       skaterParams.team = 5;
 
-      getSkatersCount(skaterParams);
+      getSkaterStatsCount(skaterParams);
 
       const query = spy.getCalls()[0].args[0] as Query;
       expect(query.conditions).to.contain(GetSkaterStatsQueries.fromTeam(5));

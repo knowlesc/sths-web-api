@@ -6,27 +6,44 @@ export class GetGoalieStatsQueries {
     ({0}.PenalityShotsShots)), 3)
   `;
 
+  private static teamAbbreFormula = `CASE
+    WHEN GoalerInfo.Status1 <= 1 THEN TeamFarmInfo.Abbre
+    WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
+  END`;
+
   // SELECT
-  static baseQuery = `
+  static allFieldsQuery = `
     SELECT GoalerInfo.TeamName, {0}.*,
+      ${GetGoalieStatsQueries.teamAbbreFormula} AS TeamAbbre,
       ${GetGoalieStatsQueries.gaaFormula} AS GAA,
       ${GetGoalieStatsQueries.pctFormula} AS PCT,
       ${GetGoalieStatsQueries.psPctFormula} AS PenaltyShotsPCT
   `;
 
+  static totalResultsQuery = `SELECT count(*) as count`;
+
   // FROM
   static fromQuery = `
     FROM GoalerInfo
       INNER JOIN {0} ON GoalerInfo.Number = {0}.Number
+      LEFT JOIN TeamFarmInfo ON GoalerInfo.Team = TeamFarmInfo.UniqueID
+      LEFT JOIN TeamProInfo ON GoalerInfo.Team = TeamProInfo.UniqueID
   `;
 
   // WHERE
   static fromTeam = (teamId: number) => `GoalerInfo.Team = ${teamId}`;
+  static fromLeague = (league: string) => {
+    const currentlyOnTeam = league === 'farm' ?
+    `GoalerInfo.Status1 <= 1` : // 0 = Farm (scratched), 1 = Farm
+    `GoalerInfo.Status1 >= 2`; // 2 = Pro (scratched), 3 = Pro
+    const hasPlayedForTeam = `{0}.GP > 0`;
+
+    return `${currentlyOnTeam} OR ${hasPlayedForTeam}`;
+  }
+
   static hasTeam = `(GoalerInfo.Team > 0)`;
   static hasSavePercentage = `(PCT > 0)`;
   static hasPlayedMinimumGames = `
-    ({0}.SecondPlay >= (
-      (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)*3600)
-    )
+    {0}.GP >= (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)
   `;
 }
