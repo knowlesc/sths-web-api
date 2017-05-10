@@ -11,7 +11,7 @@ const farmTeamTable = 'TeamFarmInfo';
 
 const sortableCustomFields = ['Position', 'AvgTOI', 'ShotsPCT', 'P60', 'TeamAbbre'];
 const sortableStatFields = ['Number', 'Name', 'GP', 'G', 'A', 'P',
-    'PlusMinus', 'PIM', 'Hits', 'Shots', 'ShotsBlock', 'PPG', 'PPA', 'PPP'];
+    'PlusMinus', 'Pim', 'Hits', 'Shots', 'ShotsBlock', 'PPG', 'PPA', 'PPP'];
 
 const allowedSortFields = sortableCustomFields.concat(sortableStatFields);
 
