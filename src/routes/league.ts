@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getLeagueLog, LeagueLogParams } from '../services/league/getLeagueLog';
+import { getLeagueLog, getLeagueLogCount, LeagueLogParams } from '../services/league/getLeagueLog';
 import { getLeagueOutputOptions } from '../services/league/getLeagueOutputOptions';
 import { Logger } from '../common/logger';
 
@@ -15,8 +15,10 @@ export function leagueRoutes() {
     };
 
     try {
-      getLeagueLog(params)
-        .then((results) => {
+      Promise.all([getLeagueLog(params), getLeagueLogCount(params)])
+        .then(([results, count]) => {
+            const totalResults = (count as { count: string }[])[0].count;
+            res.setHeader('X-Total-Count', totalResults);
             res.send(results);
           },
           (err) => {

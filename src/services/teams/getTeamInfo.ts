@@ -1,16 +1,15 @@
 import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
 import { TeamInfoParams } from '../../models/teams/teamInfoParams';
-
-const selectListFieldsQuery = `SELECT UniqueID, Abbre, Name`;
-const selectAllFieldsQuery = `SELECT *`;
-const fromQuery = `FROM {0}`;
+import { TeamInfoQueries as Queries } from './getTeamInfo.queries';
 
 const farmTable = 'TeamFarmInfo';
 const proTable = 'TeamProInfo';
 
 const getWhereConditions = (params: TeamInfoParams) => {
-  const conditions = [`UniqueID = '${parseInt(params.id)}'`];
+  const conditions = [];
+
+  conditions.push(Queries.hasId(params.id));
 
   return conditions;
 };
@@ -18,8 +17,8 @@ const getWhereConditions = (params: TeamInfoParams) => {
 export function getTeamList(params: TeamInfoParams) {
   const tableToUse = params.league === 'farm' ? farmTable : proTable;
 
-  const query = new Query(selectListFieldsQuery, fromQuery)
-    .orderBy('Abbre');
+  const query = new Query(Queries.selectListFieldsQuery, Queries.fromQuery)
+    .orderBy('{0}.Abbre');
 
   return QueryRunner.runQuery(query, tableToUse);
 }
@@ -30,11 +29,12 @@ export function getTeamInfo(params: TeamInfoParams) {
   }
 
   const tableToUse = params.league === 'farm' ? farmTable : proTable;
+  const otherTable = params.league === 'farm' ? proTable : farmTable;
   const conditions = getWhereConditions(params);
 
-  const query = new Query(selectAllFieldsQuery, fromQuery)
+  const query = new Query(Queries.selectAllFieldsQuery, Queries.fromQuery)
     .where(conditions)
-    .orderBy('Abbre');
+    .orderBy('{0}.Abbre');
 
-  return QueryRunner.runQuerySingle(query, tableToUse);
+  return QueryRunner.runQuerySingle(query, tableToUse, otherTable);
 }
