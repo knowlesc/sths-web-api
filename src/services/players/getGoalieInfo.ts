@@ -6,7 +6,8 @@ import { SortHelper } from '../sortHelper';
 
 const allowedSortFields = ['Name', 'TeamAbbre', 'Condition', 'SK', 'DU', 'EN', 'SZ',
   'AG', 'RB', 'SC', 'HS', 'RT', 'PH', 'PS', 'EX', 'LD', 'PO', 'MO', 'Overall',
-  'AvailableforTrade', 'StarPower'];
+  'AvailableforTrade', 'StarPower', 'Age', 'Rookie', 'Weight', 'Height', 'NoTrade',
+  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3'];
 
 const getWhereConditions = (params: GoalieInfoParams) => {
   const conditions = [];
