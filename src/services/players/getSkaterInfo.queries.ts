@@ -1,9 +1,14 @@
 export class GetSkaterInfoQueries {
   // SELECT
   static positionFormula = `CASE
-    WHEN PlayerInfo.PosC = 'True' THEN 'C'
-    WHEN PlayerInfo.PosLW = 'True' THEN 'LW'
-    WHEN PlayerInfo.PosRW = 'True' THEN 'RW'
+    WHEN PlayerInfo.PosC = 'False'  AND PlayerInfo.PosLW = 'False'  AND PlayerInfo.PosRW = 'False'  THEN 'D'
+    WHEN PlayerInfo.PosC = 'False'  AND PlayerInfo.PosLW = 'False'  AND PlayerInfo.PosRW = 'True'   THEN 'RW'
+    WHEN PlayerInfo.PosC = 'False'  AND PlayerInfo.PosLW = 'True'   AND PlayerInfo.PosRW = 'False'  THEN 'LW'
+    WHEN PlayerInfo.PosC = 'False'  AND PlayerInfo.PosLW = 'True'   AND PlayerInfo.PosRW = 'True'   THEN 'LW/RW'
+    WHEN PlayerInfo.PosC = 'True'   AND PlayerInfo.PosLW = 'False'  AND PlayerInfo.PosRW = 'False'  THEN 'C'
+    WHEN PlayerInfo.PosC = 'True'   AND PlayerInfo.PosLW = 'False'  AND PlayerInfo.PosRW = 'True'   THEN 'C/RW'
+    WHEN PlayerInfo.PosC = 'True'   AND PlayerInfo.PosLW = 'True'   AND PlayerInfo.PosRW = 'False'  THEN 'C/LW'
+    WHEN PlayerInfo.PosC = 'True'   AND PlayerInfo.PosLW = 'True'   AND PlayerInfo.PosRW = 'True'   THEN 'C/LW/RW'
     WHEN PlayerInfo.PosD = 'True' THEN 'D'
   END`;
 
