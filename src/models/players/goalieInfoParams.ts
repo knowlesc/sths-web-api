@@ -6,4 +6,5 @@ export interface GoalieInfoParams {
   limit?: number;
   skip?: number;
   sort?: string;
+  fields?: string;
 }

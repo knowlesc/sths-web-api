@@ -2,12 +2,9 @@ import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
 import { GoalieInfoParams } from '../../models/players/goalieInfoParams';
 import { GetGoalieInfoQueries as Queries } from './getGoalieInfo.queries';
+import { GetGoalieInfoFields as Fields } from './getGoalieInfo.fields';
 import { SortHelper } from '../sortHelper';
-
-const allowedSortFields = ['Name', 'TeamAbbre', 'Condition', 'SK', 'DU', 'EN', 'SZ',
-  'AG', 'RB', 'SC', 'HS', 'RT', 'PH', 'PS', 'EX', 'LD', 'PO', 'MO', 'Overall',
-  'AvailableforTrade', 'StarPower', 'Age', 'Rookie', 'Weight', 'Height', 'NoTrade',
-  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3'];
+import { FieldHelper } from '../fieldHelper';
 
 const getWhereConditions = (params: GoalieInfoParams) => {
   const conditions = [];
@@ -22,9 +19,12 @@ const getWhereConditions = (params: GoalieInfoParams) => {
 
 export function getGoalieInfo(params: GoalieInfoParams) {
   const conditions = getWhereConditions(params);
-  const sort = SortHelper.validateAndConvertSort(params.sort, allowedSortFields);
+  const sort = SortHelper.validateAndConvertSort(
+    params.sort, Fields.allowedFields, Fields.getFullColumnName);
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
 
-  const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
+  const query = new Query(select, Queries.fromQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
@@ -36,7 +36,7 @@ export function getGoalieInfo(params: GoalieInfoParams) {
 export function getGoalieInfoCount(params: GoalieInfoParams) {
   const conditions = getWhereConditions(params);
 
-  const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
+  const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
   return QueryRunner.runQuery(query);

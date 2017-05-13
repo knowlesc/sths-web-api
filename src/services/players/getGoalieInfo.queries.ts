@@ -1,16 +1,15 @@
 export class GetGoalieInfoQueries {
-  private static teamAbbreFormula = `CASE
+  // SELECT
+  static teamAbbreFormula = `CASE
     WHEN GoalerInfo.Status1 <= 1 THEN TeamFarmInfo.Abbre
     WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
 
-  // SELECT
-  static allFieldsQuery = `
-  SELECT GoalerInfo.*,
-    ${GetGoalieInfoQueries.teamAbbreFormula} as TeamAbbre
-  `;
-
-  static totalResultsQuery = `SELECT count(*) as count`;
+  static freeAgentStatusFormula = `CASE
+    WHEN GoalerInfo.Age >= (SELECT UFAAge FROM LeagueGeneral) THEN 'UFA'
+    WHEN GoalerInfo.Age >= (SELECT RFAAge FROM LeagueGeneral) THEN 'RFA'
+    ELSE 'ELC'
+  END`;
 
   // FROM
   static fromQuery = `

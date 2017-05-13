@@ -1,31 +1,22 @@
 export class GetSkaterInfoQueries {
-  private static positionFormula = `CASE
+  // SELECT
+  static positionFormula = `CASE
     WHEN PlayerInfo.PosC = 'True' THEN 'C'
     WHEN PlayerInfo.PosLW = 'True' THEN 'LW'
     WHEN PlayerInfo.PosRW = 'True' THEN 'RW'
     WHEN PlayerInfo.PosD = 'True' THEN 'D'
   END`;
 
-  private static teamAbbreFormula = `CASE
+  static teamAbbreFormula = `CASE
     WHEN PlayerInfo.Status1 <= 1 THEN TeamFarmInfo.Abbre
     WHEN PlayerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
 
-  private static freeAgentStatusFormula = `CASE
+  static freeAgentStatusFormula = `CASE
     WHEN PlayerInfo.Age >= (SELECT UFAAge FROM LeagueGeneral) THEN 'UFA'
     WHEN PlayerInfo.Age >= (SELECT RFAAge FROM LeagueGeneral) THEN 'RFA'
     ELSE 'ELC'
   END`;
-
-  // SELECT
-  static allFieldsQuery = `
-    SELECT PlayerInfo.*,
-      ${GetSkaterInfoQueries.teamAbbreFormula} as TeamAbbre,
-      ${GetSkaterInfoQueries.positionFormula} as Position,
-      ${GetSkaterInfoQueries.freeAgentStatusFormula} as FreeAgentStatus
-  `;
-
-  static totalResultsQuery = `SELECT count(*) as count`;
 
   // FROM
   static fromQuery = `

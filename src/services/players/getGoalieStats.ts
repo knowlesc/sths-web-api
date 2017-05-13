@@ -27,7 +27,8 @@ const getWhereConditions = (params: GoalieStatsParams) => {
 export function getGoalieStats(params: GoalieStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const conditions = getWhereConditions(params);
-  const sort = SortHelper.validateAndConvertSort(params.sort, allowedSortFields);
+  const sort = SortHelper.validateAndConvertSort(
+    params.sort, allowedSortFields, (field) => `{0}.${field}`);
 
   const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
     .where(conditions)

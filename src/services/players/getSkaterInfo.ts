@@ -2,13 +2,9 @@ import { QueryRunner } from '../../db/queryRunner';
 import { Query } from '../../db/query';
 import { SkaterInfoParams } from '../../models/players/skaterInfoParams';
 import { GetSkaterInfoQueries as Queries } from './getSkaterInfo.queries';
+import { GetSkaterInfoFields as Fields } from './getSkaterInfo.fields';
 import { SortHelper } from '../sortHelper';
-
-const allowedSortFields = ['Name', 'Position', 'TeamAbbre', 'Condition', 'CK',
-  'FG', 'DI', 'SK', 'ST', 'EN', 'DU', 'PH', 'FO', 'PA', 'SC', 'DF', 'PS', 'EX',
-  'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower', 'Age',
-  'Rookie', 'Weight', 'Height', 'NoTrade', 'ForceWaiver', 'Contract',
-  'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3'];
+import { FieldHelper } from '../fieldHelper';
 
 const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];
@@ -23,9 +19,12 @@ const getWhereConditions = (params: SkaterInfoParams) => {
 
 export function getSkaterInfo(params: SkaterInfoParams) {
   const conditions = getWhereConditions(params);
-  const sort = SortHelper.validateAndConvertSort(params.sort, allowedSortFields);
+  const sort = SortHelper.validateAndConvertSort(
+    params.sort, Fields.allowedFields, Fields.getFullColumnName);
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
 
-  const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
+  const query = new Query(select, Queries.fromQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
@@ -37,7 +36,7 @@ export function getSkaterInfo(params: SkaterInfoParams) {
 export function getSkaterInfoCount(params: SkaterInfoParams) {
   const conditions = getWhereConditions(params);
 
-  const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
+  const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
   return QueryRunner.runQuery(query);
