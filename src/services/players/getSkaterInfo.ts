@@ -6,7 +6,9 @@ import { SortHelper } from '../sortHelper';
 
 const allowedSortFields = ['Name', 'Position', 'TeamAbbre', 'Condition', 'CK',
   'FG', 'DI', 'SK', 'ST', 'EN', 'DU', 'PH', 'FO', 'PA', 'SC', 'DF', 'PS', 'EX',
-  'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower'];
+  'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower', 'Age',
+  'Rookie', 'Weight', 'Height', 'NoTrade', 'ForceWaiver', 'Contract',
+  'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3'];
 
 const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];

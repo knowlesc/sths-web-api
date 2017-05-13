@@ -11,11 +11,18 @@ export class GetSkaterInfoQueries {
     WHEN PlayerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
 
+  private static freeAgentStatusFormula = `CASE
+    WHEN PlayerInfo.Age >= (SELECT UFAAge FROM LeagueGeneral) THEN 'UFA'
+    WHEN PlayerInfo.Age >= (SELECT RFAAge FROM LeagueGeneral) THEN 'RFA'
+    ELSE 'ELC'
+  END`;
+
   // SELECT
   static allFieldsQuery = `
     SELECT PlayerInfo.*,
       ${GetSkaterInfoQueries.teamAbbreFormula} as TeamAbbre,
-      ${GetSkaterInfoQueries.positionFormula} as Position
+      ${GetSkaterInfoQueries.positionFormula} as Position,
+      ${GetSkaterInfoQueries.freeAgentStatusFormula} as FreeAgentStatus
   `;
 
   static totalResultsQuery = `SELECT count(*) as count`;
