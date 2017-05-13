@@ -12,7 +12,19 @@ export class GetSkaterStatsQueries {
 
   // SELECT
   static allFieldsQuery = `
-    SELECT {0}.*,
+    SELECT {0}.Name,
+      {0}.GP,
+      {0}.G,
+      {0}.A,
+      {0}.P,
+      {0}.PlusMinus,
+      {0}.Pim,
+      {0}.Hits,
+      {0}.Shots,
+      {0}.ShotsBlock,
+      {0}.PPG,
+      {0}.PPA,
+      {0}.PPP,
       {1}.Abbre as TeamAbbre,
       ${GetSkaterStatsQueries.positionFormula} as Position,
       ${GetSkaterStatsQueries.shotPctFormula} AS ShotsPCT,

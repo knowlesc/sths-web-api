@@ -13,7 +13,20 @@ export class GetGoalieStatsQueries {
 
   // SELECT
   static allFieldsQuery = `
-    SELECT GoalerInfo.TeamName, {0}.*,
+    SELECT GoalerInfo.TeamName,
+      {0}.Name,
+      {0}.GP,
+      {0}.W,
+      {0}.L,
+      {0}.OTL,
+      {0}.SecondPlay,
+      {0}.Pim,
+      {0}.Shootout,
+      {0}.GA,
+      {0}.SA,
+      {0}.A,
+      {0}.EmptyNetGoal,
+      {0}.PenalityShotsShots,
       ${GetGoalieStatsQueries.teamAbbreFormula} AS TeamAbbre,
       ${GetGoalieStatsQueries.gaaFormula} AS GAA,
       ${GetGoalieStatsQueries.pctFormula} AS PCT,
