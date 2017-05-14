@@ -1,8 +1,8 @@
-import { Query } from '../../db/query';
-import { QueryRunner } from '../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { QueryRunner } from '../../../db/queryRunner';
 import { getSkaterStats, getSkaterStatsCount } from './getSkaterStats';
 import { GetSkaterStatsQueries } from './getSkaterStats.queries';
-import { SkaterStatsParams } from '../../models/players/skaterStatsParams';
+import { SkaterStatsParams } from '../../../models/players/skaterStatsParams';
 
 import * as sinon from 'sinon';
 import { expect } from 'chai';

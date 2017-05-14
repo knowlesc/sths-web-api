@@ -1,10 +1,10 @@
-import { QueryRunner } from '../../db/queryRunner';
-import { Query } from '../../db/query';
-import { SkaterInfoParams } from '../../models/players/skaterInfoParams';
+import { QueryRunner } from '../../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { SkaterInfoParams } from '../../../models/players/skaterInfoParams';
 import { GetSkaterInfoQueries as Queries } from './getSkaterInfo.queries';
 import { GetSkaterInfoFields as Fields } from './getSkaterInfo.fields';
-import { SortHelper } from '../sortHelper';
-import { FieldHelper } from '../fieldHelper';
+import { SortHelper } from '../../sortHelper';
+import { FieldHelper } from '../../fieldHelper';
 
 const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];

@@ -1,7 +1,7 @@
-import { QueryRunner } from '../../db/queryRunner';
-import { Query } from '../../db/query';
-import { SkaterStatsParams } from '../../models/players/skaterStatsParams';
-import { SortHelper } from '../sortHelper';
+import { QueryRunner } from '../../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { SkaterStatsParams } from '../../../models/players/skaterStatsParams';
+import { SortHelper } from '../../sortHelper';
 import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
 
 const proStatTable = 'PlayerProStat';

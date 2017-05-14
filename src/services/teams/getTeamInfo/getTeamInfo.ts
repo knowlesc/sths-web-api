@@ -1,6 +1,6 @@
-import { QueryRunner } from '../../db/queryRunner';
-import { Query } from '../../db/query';
-import { TeamInfoParams } from '../../models/teams/teamInfoParams';
+import { QueryRunner } from '../../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { TeamInfoParams } from '../../../models/teams/teamInfoParams';
 import { TeamInfoQueries as Queries } from './getTeamInfo.queries';
 
 const farmTable = 'TeamFarmInfo';

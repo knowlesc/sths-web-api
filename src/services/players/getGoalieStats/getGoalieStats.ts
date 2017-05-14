@@ -1,7 +1,7 @@
-import { QueryRunner } from '../../db/queryRunner';
-import { Query } from '../../db/query';
-import { SortHelper } from '../sortHelper';
-import { GoalieStatsParams } from '../../models/players/goalieStatsParams';
+import { QueryRunner } from '../../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { SortHelper } from '../../sortHelper';
+import { GoalieStatsParams } from '../../../models/players/goalieStatsParams';
 import { GetGoalieStatsQueries as Queries } from './getGoalieStats.queries';
 
 const proStatTable = 'GoalerProStat';

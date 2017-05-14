@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Logger } from '../common/logger';
-import { getTeamInfo, getTeamList } from '../services/teams/getTeamInfo';
+import { getTeamInfo, getTeamList } from '../services/teams/getTeamInfo/getTeamInfo';
 import { TeamInfoParams } from '../models/teams/teamInfoParams';
 
 const log = new Logger('teamsRoutes');

@@ -1,10 +1,10 @@
-import { QueryRunner } from '../../db/queryRunner';
-import { Query } from '../../db/query';
-import { GoalieInfoParams } from '../../models/players/goalieInfoParams';
+import { QueryRunner } from '../../../db/queryRunner';
+import { Query } from '../../../db/query';
+import { GoalieInfoParams } from '../../../models/players/goalieInfoParams';
 import { GetGoalieInfoQueries as Queries } from './getGoalieInfo.queries';
 import { GetGoalieInfoFields as Fields } from './getGoalieInfo.fields';
-import { SortHelper } from '../sortHelper';
-import { FieldHelper } from '../fieldHelper';
+import { SortHelper } from '../../sortHelper';
+import { FieldHelper } from '../../fieldHelper';
 
 const getWhereConditions = (params: GoalieInfoParams) => {
   const conditions = [];

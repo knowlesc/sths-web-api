@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats';
-import { getSkaterInfo, getSkaterInfoCount } from '../services/players/getSkaterInfo';
-import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats';
-import { getGoalieInfo, getGoalieInfoCount } from '../services/players/getGoalieInfo';
+import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats/getSkaterStats';
+import { getSkaterInfo, getSkaterInfoCount } from '../services/players/getSkaterInfo/getSkaterInfo';
+import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats/getGoalieStats';
+import { getGoalieInfo, getGoalieInfoCount } from '../services/players/getGoalieInfo/getGoalieInfo';
 import { SkaterStatsParams } from '../models/players/skaterStatsParams';
 import { SkaterInfoParams } from '../models/players/skaterInfoParams';
 import { GoalieStatsParams } from '../models/players/goalieStatsParams';
