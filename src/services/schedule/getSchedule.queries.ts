@@ -52,7 +52,9 @@ export class ScheduleQueries {
   `;
 
   static upcomingGamesQuery = `
-    SELECT SchedulePro.*,
+    SELECT TeamProInfoHome.Abbre as HAbbre,
+      TeamProInfoVisitor.Abbre as VAbbre,
+      SchedulePro.*,
       ${ScheduleQueries.totalHomeWinsFormula} as HTotalWins,
       ${ScheduleQueries.totalVisitorWinsFormula} as VTotalWins,
       ${ScheduleQueries.totalHomeLossesFormula} as HTotalLosses,
@@ -103,6 +105,8 @@ export class ScheduleQueries {
     FROM SchedulePRO
       LEFT JOIN TeamProStat AS TeamProStatHome ON SchedulePRO.HomeTeam = TeamProStatHome.Number
       LEFT JOIN TeamProStat AS TeamProStatVisitor ON SchedulePRO.VisitorTeam = TeamProStatVisitor.Number
+      LEFT JOIN TeamProInfo AS TeamProInfoHome ON TeamProStatHome.Number = TeamProInfoHome.UniqueID
+      LEFT JOIN TeamProInfo AS TeamProInfoVisitor ON TeamProStatVisitor.Number = TeamProInfoVisitor.UniqueID
   `;
 
   // WHERE
