@@ -27,6 +27,7 @@ export class GetSkaterStatsQueries {
       {0}.Hits,
       {0}.Shots,
       {0}.ShotsBlock,
+      {0}.PKG,
       {0}.PPG,
       {0}.PPA,
       {0}.PPP,
