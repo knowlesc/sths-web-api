@@ -12,6 +12,8 @@ const farmStatTable = 'TeamFarmStat';
 const getWhereConditions = (params: TeamStatsParams) => {
   const conditions = [];
 
+  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
+
   return conditions;
 };
 

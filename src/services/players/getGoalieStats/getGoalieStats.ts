@@ -1,8 +1,10 @@
 import { QueryRunner } from '../../../db/queryRunner';
 import { Query } from '../../../db/query';
 import { SortHelper } from '../../sortHelper';
+import { GetGoalieStatsFields as Fields } from './getGoalieStats.fields';
 import { GoalieStatsParams } from '../../../models/players/goalieStatsParams';
 import { GetGoalieStatsQueries as Queries } from './getGoalieStats.queries';
+import { FieldHelper } from '../../fieldHelper';
 
 const proStatTable = 'GoalerProStat';
 const farmStatTable = 'GoalerFarmStat';
@@ -19,7 +21,7 @@ const getWhereConditions = (params: GoalieStatsParams) => {
   if (params.hasSavePercentage === 'true') { conditions.push(Queries.hasSavePercentage); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
-  if (params.team) { conditions.push(Queries.fromTeam(params.team)); }
+  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
 
   return conditions;
 };
@@ -28,9 +30,11 @@ export function getGoalieStats(params: GoalieStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const conditions = getWhereConditions(params);
   const sort = SortHelper.validateAndConvertSort(
-    params.sort, allowedSortFields, (field) => `{0}.${field}`);
+    params.sort, Fields.allowedFields, Fields.getFullColumnName);
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
 
-  const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
+  const query = new Query(select, Queries.fromQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
@@ -43,7 +47,7 @@ export function getGoalieStatsCount(params: GoalieStatsParams) {
   const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
   const conditions = getWhereConditions(params);
 
-  const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
+  const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
   return QueryRunner.runQuery(query, statTableToUse);

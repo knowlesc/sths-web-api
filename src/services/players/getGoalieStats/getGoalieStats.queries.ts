@@ -1,39 +1,16 @@
 export class GetGoalieStatsQueries {
-  private static gaaFormula = `ROUND((CAST({0}.GA AS REAL) / ({0}.SecondPlay / 60)) * 60, 3)`;
-  private static pctFormula = `ROUND((CAST({0}.SA - {0}.GA AS REAL) / ({0}.SA)), 3)`;
-  private static psPctFormula = `
+  // SELECT
+  static gaaFormula = `ROUND((CAST({0}.GA AS REAL) / ({0}.SecondPlay / 60)) * 60, 3)`;
+  static pctFormula = `ROUND((CAST({0}.SA - {0}.GA AS REAL) / ({0}.SA)), 3)`;
+  static psPctFormula = `
     ROUND((CAST({0}.PenalityShotsShots - {0}.PenalityShotsGoals AS REAL) /
     ({0}.PenalityShotsShots)), 3)
   `;
 
-  private static teamAbbreFormula = `CASE
+  static teamAbbreFormula = `CASE
     WHEN GoalerInfo.Status1 <= 1 THEN TeamFarmInfo.Abbre
     WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
-
-  // SELECT
-  static allFieldsQuery = `
-    SELECT GoalerInfo.TeamName,
-      {0}.Name,
-      {0}.GP,
-      {0}.W,
-      {0}.L,
-      {0}.OTL,
-      {0}.SecondPlay,
-      {0}.Pim,
-      {0}.Shootout,
-      {0}.GA,
-      {0}.SA,
-      {0}.A,
-      {0}.EmptyNetGoal,
-      {0}.PenalityShotsShots,
-      ${GetGoalieStatsQueries.teamAbbreFormula} AS TeamAbbre,
-      ${GetGoalieStatsQueries.gaaFormula} AS GAA,
-      ${GetGoalieStatsQueries.pctFormula} AS PCT,
-      ${GetGoalieStatsQueries.psPctFormula} AS PenaltyShotsPCT
-  `;
-
-  static totalResultsQuery = `SELECT count(*) as count`;
 
   // FROM
   static fromQuery = `

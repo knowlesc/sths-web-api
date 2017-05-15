@@ -46,4 +46,7 @@ export class TeamStatsQueries {
 
   // FROM
   static fromQuery = `FROM {0}`;
+
+  // WHERE
+  static fromTeam = (teamId: number) => `{0}.Number = ${teamId}`;
 }

@@ -3,5 +3,6 @@ export class TeamStatsParams {
   limit?: number;
   skip?: number;
   sort?: string;
+  team?: number;
   fields?: string;
 }

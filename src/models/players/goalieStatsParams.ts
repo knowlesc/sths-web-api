@@ -7,4 +7,5 @@ export interface GoalieStatsParams {
   limit?: number;
   skip?: number;
   sort?: string;
+  fields?: string;
 }

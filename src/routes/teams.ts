@@ -85,6 +85,7 @@ export function teamsRoutes() {
       limit: req.query.limit,
       skip: req.query.skip,
       sort: req.query.sort,
+      team: req.query.team,
       fields: req.query.fields
     };
 
