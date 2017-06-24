@@ -4,4 +4,6 @@ export interface ScheduleParams {
   sort?: string;
   day?: string;
   nextSimOnly?: string;
+  team?: number;
+  league?: string;
 }

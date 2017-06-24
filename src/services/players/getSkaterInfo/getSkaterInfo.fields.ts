@@ -3,6 +3,7 @@ import { GetSkaterInfoQueries } from './getSkaterInfo.queries';
 export class GetSkaterInfoFields {
   static customColumns = {
     'TeamAbbre': `${GetSkaterInfoQueries.teamAbbreFormula} as TeamAbbre`,
+    'TeamName': `${GetSkaterInfoQueries.teamNameFormula} as TeamName`,
     'FreeAgentStatus': `${GetSkaterInfoQueries.freeAgentStatusFormula} as FreeAgentStatus`,
     'Position': `${GetSkaterInfoQueries.positionFormula} as Position`
   };
@@ -10,8 +11,8 @@ export class GetSkaterInfoFields {
   static allowedFields = ['Name', 'Position', 'TeamAbbre', 'Condition', 'CK',
     'FG', 'DI', 'SK', 'ST', 'EN', 'DU', 'PH', 'FO', 'PA', 'SC', 'DF', 'PS', 'EX',
     'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower', 'Age',
-    'Rookie', 'Weight', 'Height', 'NoTrade', 'ForceWaiver', 'Contract',
-    'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3', 'AgeDate'];
+    'Rookie', 'Weight', 'Height', 'NoTrade', 'ForceWaiver', 'Contract', 'TeamName',
+    'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3', 'AgeDate', 'UniqueID'];
 
   static getFullColumnDescriptor(field: string): string {
     if (!field) {

@@ -17,7 +17,8 @@ export class GetSkaterStatsQueries {
 
   // SELECT
   static allFieldsQuery = `
-    SELECT {0}.Name,
+    SELECT {0}.UniqueID,
+      {0}.Name,
       {0}.GP,
       {0}.G,
       {0}.A,

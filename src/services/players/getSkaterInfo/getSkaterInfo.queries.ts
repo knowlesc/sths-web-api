@@ -17,6 +17,11 @@ export class GetSkaterInfoQueries {
     WHEN PlayerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
 
+  static teamNameFormula = `CASE
+    WHEN PlayerInfo.Status1 <= 1 THEN TeamFarmInfo.Name
+    WHEN PlayerInfo.Status1 >= 2 THEN TeamProInfo.Name
+  END`;
+
   static freeAgentStatusFormula = `CASE
     WHEN PlayerInfo.Age >= (SELECT UFAAge FROM LeagueGeneral) THEN 'UFA'
     WHEN PlayerInfo.Age >= (SELECT RFAAge FROM LeagueGeneral) THEN 'RFA'
@@ -31,6 +36,7 @@ export class GetSkaterInfoQueries {
   `;
 
   // WHERE
+  static hasId = (id: string) => `PlayerInfo.UniqueID = '${parseInt(id)}'`;
   static fromTeam = (teamId: number) => `PlayerInfo.Team = ${teamId}`;
   static fromLeague = (league: string) => league === 'farm' ?
     `PlayerInfo.Status1 <= 1` : // 0 = Farm (scratched), 1 = Farm

@@ -1,112 +1,84 @@
 export class ScheduleQueries {
-
-  // TODO move this to a different service
-  static recentGamesQuery = `
-    SELECT *
-    FROM SchedulePro
-    WHERE Day = (
-      (SELECT ScheduleNextDay FROM LeagueGeneral) -
-      (SELECT DefaultSimulationPerDay FROM LeagueGeneral))
-    ORDER BY GameNumber
-  `;
-
   // SELECT
   static totalHomeWinsFormula = `
-    (TeamProStatHome.W + TeamProStatHome.OTW + TeamProStatHome.SOW)
+    ({0}Home.W + {0}Home.OTW + {0}Home.SOW)
   `;
 
   static totalVisitorWinsFormula = `
-    (TeamProStatVisitor.W + TeamProStatVisitor.OTW + TeamProStatVisitor.SOW)
+    ({0}Visitor.W + {0}Visitor.OTW + {0}Visitor.SOW)
   `;
 
   static totalHomeLossesFormula = `
     CASE
       WHEN (SELECT PointSystemSO FROM LeagueGeneral) = 'True'
-        THEN (TeamProStatHome.L)
-      ELSE (TeamProStatHome.L + TeamProStatHome.OTL + TeamProStatHome.SOL)
+        THEN ({0}Home.L)
+      ELSE ({0}Home.L + {0}Home.OTL + {0}Home.SOL)
     END
   `;
 
   static totalVisitorLossesFormula = `
     CASE
       WHEN (SELECT PointSystemSO FROM LeagueGeneral) = 'True'
-        THEN (TeamProStatVisitor.L)
-      ELSE (TeamProStatVisitor.L + TeamProStatVisitor.OTL + TeamProStatVisitor.SOL)
+        THEN ({0}Visitor.L)
+      ELSE ({0}Visitor.L + {0}Visitor.OTL + {0}Visitor.SOL)
     END
   `;
 
   static totalHomeOther = `
     CASE
       WHEN (SELECT PointSystemSO FROM LeagueGeneral) = 'True'
-        THEN (TeamProStatHome.OTL + TeamProStatHome.SOL)
-      ELSE (TeamProStatHome.T)
+        THEN ({0}Home.OTL + {0}Home.SOL)
+      ELSE ({0}Home.T)
     END
   `;
 
   static totalVisitorOther = `
     CASE
       WHEN (SELECT PointSystemSO FROM LeagueGeneral) = 'True'
-        THEN (TeamProStatVisitor.OTL + TeamProStatVisitor.SOL)
-      ELSE (TeamProStatVisitor.T)
+        THEN ({0}Visitor.OTL + {0}Visitor.SOL)
+      ELSE ({0}Visitor.T)
     END
   `;
 
   static upcomingGamesQuery = `
-    SELECT TeamProInfoHome.Abbre as HAbbre,
-      TeamProInfoVisitor.Abbre as VAbbre,
-      SchedulePro.*,
+    SELECT {2}Home.Abbre as HAbbre,
+      {2}Visitor.Abbre as VAbbre,
+      {1}.*,
       ${ScheduleQueries.totalHomeWinsFormula} as HTotalWins,
       ${ScheduleQueries.totalVisitorWinsFormula} as VTotalWins,
       ${ScheduleQueries.totalHomeLossesFormula} as HTotalLosses,
       ${ScheduleQueries.totalVisitorLossesFormula} as VTotalLosses,
       ${ScheduleQueries.totalHomeOther} as HTotalOther,
       ${ScheduleQueries.totalVisitorOther} as VTotalOther,
-      'Pro' AS Type,
-      TeamProStatVisitor.Last10W AS VLast10W,
-      TeamProStatVisitor.Last10L AS VLast10L,
-      TeamProStatVisitor.Last10T AS VLast10T,
-      TeamProStatVisitor.Last10OTW AS VLast10OTW,
-      TeamProStatVisitor.Last10OTL AS VLast10OTL,
-      TeamProStatVisitor.Last10SOW AS VLast10SOW,
-      TeamProStatVisitor.Last10SOL AS VLast10SOL,
-      TeamProStatVisitor.GP AS VGP,
-      TeamProStatVisitor.W AS VW,
-      TeamProStatVisitor.L AS VL,
-      TeamProStatVisitor.T AS VT,
-      TeamProStatVisitor.OTW AS VOTW,
-      TeamProStatVisitor.OTL AS VOTL,
-      TeamProStatVisitor.SOW AS VSOW,
-      TeamProStatVisitor.SOL AS VSOL,
-      TeamProStatVisitor.Points AS VPoints,
-      TeamProStatVisitor.Streak AS VStreak,
-      TeamProStatHome.Last10W AS HLast10W,
-      TeamProStatHome.Last10L AS HLast10L,
-      TeamProStatHome.Last10T AS HLast10T,
-      TeamProStatHome.Last10OTW AS HLast10OTW,
-      TeamProStatHome.Last10OTL AS HLast10OTL,
-      TeamProStatHome.Last10SOW AS HLast10SOW,
-      TeamProStatHome.Last10SOL AS HLast10SOL,
-      TeamProStatHome.GP AS HGP,
-      TeamProStatHome.W AS HW,
-      TeamProStatHome.L AS HL,
-      TeamProStatHome.T AS HT,
-      TeamProStatHome.OTW AS HOTW,
-      TeamProStatHome.OTL AS HOTL,
-      TeamProStatHome.SOW AS HSOW,
-      TeamProStatHome.SOL AS HSOL,
-      TeamProStatHome.Points AS HPoints,
-      TeamProStatHome.Streak AS HStreak
+      {0}Visitor.GP AS VGP,
+      {0}Visitor.W AS VW,
+      {0}Visitor.L AS VL,
+      {0}Visitor.T AS VT,
+      {0}Visitor.OTW AS VOTW,
+      {0}Visitor.OTL AS VOTL,
+      {0}Visitor.SOW AS VSOW,
+      {0}Visitor.SOL AS VSOL,
+      {0}Visitor.Streak AS VStreak,
+      {0}Home.GP AS HGP,
+      {0}Home.W AS HW,
+      {0}Home.L AS HL,
+      {0}Home.T AS HT,
+      {0}Home.OTW AS HOTW,
+      {0}Home.OTL AS HOTL,
+      {0}Home.SOW AS HSOW,
+      {0}Home.SOL AS HSOL,
+      {0}Home.Streak AS HStreak
   `;
 
   static totalResultsQuery = `SELECT count(*) as count`;
 
   // FROM
   static fromQuery = `
-    FROM SchedulePRO
-      LEFT JOIN TeamProStat AS TeamProStatHome ON SchedulePRO.HomeTeam = TeamProStatHome.Number
-      LEFT JOIN TeamProStat AS TeamProStatVisitor ON SchedulePRO.VisitorTeam = TeamProStatVisitor.Number
-      LEFT JOIN TeamProInfo AS TeamProInfoHome ON TeamProStatHome.Number = TeamProInfoHome.UniqueID
-      LEFT JOIN TeamProInfo AS TeamProInfoVisitor ON TeamProStatVisitor.Number = TeamProInfoVisitor.UniqueID
+    FROM {1}
+      LEFT JOIN {0} AS {0}Home ON {1}.HomeTeam = {0}Home.Number
+      LEFT JOIN {0} AS {0}Visitor ON {1}.VisitorTeam = {0}Visitor.Number
+      LEFT JOIN {2} AS {2}Home ON {0}Home.Number = {2}Home.UniqueID
+      LEFT JOIN {2} AS {2}Visitor ON {0}Visitor.Number = {2}Visitor.UniqueID
   `;
 
   // WHERE
@@ -116,4 +88,7 @@ export class ScheduleQueries {
       (SELECT ScheduleNextDay FROM LeagueGeneral) +
       (SELECT DefaultSimulationPerDay FROM LeagueGeneral) - 1)
   `;
+
+  static fromTeam = (teamId: number) => `
+    {1}.HomeTeam = ${teamId} OR {1}.VisitorTeam = ${teamId}`
 }

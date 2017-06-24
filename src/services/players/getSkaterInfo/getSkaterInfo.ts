@@ -10,12 +10,33 @@ const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
 
+  // If an ID is provided, none of the other params apply
+  if (params.id && !isNaN(parseInt(params.id))) {
+    conditions.push(Queries.hasId(params.id));
+
+    return conditions;
+  }
+
   if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
 
   return conditions;
 };
+
+export function getSingleSkaterInfo(params: SkaterInfoParams) {
+  if (!params.id || isNaN(parseInt(params.id))) {
+    throw new Error('Missing or invalid skater ID.');
+  }
+
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
+
+  const query = new Query(select, Queries.fromQuery)
+    .where([Queries.hasId(params.id)]);
+
+    return QueryRunner.runQuerySingle(query);
+}
 
 export function getSkaterInfo(params: SkaterInfoParams) {
   const conditions = getWhereConditions(params);

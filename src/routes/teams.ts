@@ -78,7 +78,7 @@ export function teamsRoutes() {
     }
   });
 
-  app.get('/teams/stats', (req: express.Request, res: express.Response) => {
+  app.get('/stats/teams', (req: express.Request, res: express.Response) => {
 
     const params: TeamStatsParams = {
       league: req.query.league,

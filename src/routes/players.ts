@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats/getSkaterStats';
-import { getSkaterInfo, getSkaterInfoCount } from '../services/players/getSkaterInfo/getSkaterInfo';
+import { getSingleSkaterInfo, getSkaterInfo, getSkaterInfoCount }
+  from '../services/players/getSkaterInfo/getSkaterInfo';
 import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats/getGoalieStats';
 import { getGoalieInfo, getGoalieInfoCount } from '../services/players/getGoalieInfo/getGoalieInfo';
 import { SkaterStatsParams } from '../models/players/skaterStatsParams';
@@ -13,6 +14,30 @@ const log = new Logger('playersRoutes');
 
 export function playersRoutes() {
   const app = express();
+
+  app.get('/players/skaters/:id', (req: express.Request, res: express.Response) => {
+    const params: SkaterInfoParams = {
+      fields: req.query.fields,
+      id: req.params.id
+    };
+
+    try {
+      getSingleSkaterInfo(params)
+        .then((results) => {
+            if (results) {
+              res.send(results);
+            } else {
+              res.status(404).send();
+            }
+          }, (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving skater info.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving skater info.');
+    }
+  });
 
   app.get('/players/skaters', (req: express.Request, res: express.Response) => {
 
@@ -72,7 +97,7 @@ export function playersRoutes() {
     }
   });
 
-  app.get('/players/skaters/stats', (req: express.Request, res: express.Response) => {
+  app.get('/stats/skaters', (req: express.Request, res: express.Response) => {
 
     const params: SkaterStatsParams = {
       hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,
@@ -101,7 +126,7 @@ export function playersRoutes() {
     }
   });
 
-  app.get('/players/goalies/stats', (req: express.Request, res: express.Response) => {
+  app.get('/stats/goalies', (req: express.Request, res: express.Response) => {
 
     const params: GoalieStatsParams = {
       hasPlayedMinimumGames: req.query.hasPlayedMinimumGames,

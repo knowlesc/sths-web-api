@@ -14,7 +14,9 @@ export function scheduleRoutes() {
       skip: req.query.skip,
       sort: req.query.sort,
       day: req.query.day,
-      nextSimOnly: req.query.nextSimOnly
+      nextSimOnly: req.query.nextSimOnly,
+      league: req.query.league,
+      team: req.query.team
     };
 
     try {
