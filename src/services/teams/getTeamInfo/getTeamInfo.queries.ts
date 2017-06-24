@@ -11,5 +11,5 @@ export class TeamInfoQueries {
   `;
 
   // WHERE
-  static hasId = (id: string) => `{0}.UniqueID = '${parseInt(id)}'`;
+  static hasId = (id: number) => `{0}.UniqueID = '${id}'`;
 }

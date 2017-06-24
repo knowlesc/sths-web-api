@@ -2,8 +2,9 @@ export interface ScheduleParams {
   limit?: number;
   skip?: number;
   sort?: string;
-  day?: string;
-  nextSimOnly?: string;
+  startDay?: number;
+  endDay?: number;
   team?: number;
+  nextSimOnly?: string;
   league?: string;
 }

@@ -5,6 +5,7 @@ import { GetGoalieStatsFields as Fields } from './getGoalieStats.fields';
 import { GoalieStatsParams } from '../../../models/players/goalieStatsParams';
 import { GetGoalieStatsQueries as Queries } from './getGoalieStats.queries';
 import { FieldHelper } from '../../fieldHelper';
+import { ParamHelper } from '../../paramHelper';
 
 const proStatTable = 'GoalerProStat';
 const farmStatTable = 'GoalerFarmStat';
@@ -16,12 +17,13 @@ const allowedSortFields = ['Name', 'TeamAbbre', 'GP', 'W', 'L', 'OTL', 'PCT', 'G
 const getWhereConditions = (params: GoalieStatsParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
+  const team = ParamHelper.parseNumberParam(params.team);
 
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
   if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
   if (params.hasSavePercentage === 'true') { conditions.push(Queries.hasSavePercentage); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
 
   return conditions;
 };

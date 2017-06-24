@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { getLeagueLog, getLeagueLogCount, LeagueLogParams } from '../services/league/getLeagueLog';
-import { getLeagueOutputOptions } from '../services/league/getLeagueOutputOptions';
+import { getLeagueInfo } from '../services/league/getLeagueInfo';
 import { Logger } from '../common/logger';
 
 const log = new Logger('leagueRoutes');
@@ -31,19 +31,19 @@ export function leagueRoutes() {
     }
   });
 
-  app.get('/league/outputOptions', (req: express.Request, res: express.Response) => {
+  app.get('/league/info', (req: express.Request, res: express.Response) => {
     try {
-      getLeagueOutputOptions()
+      getLeagueInfo()
         .then((results) => {
             res.send(results);
           },
           (err) => {
             log.error(err);
-            res.status(500).send('Error retrieving output options.');
+            res.status(500).send('Error retrieving league info.');
           });
     } catch (err) {
       log.error(err);
-      res.status(500).send('Error retrieving output options.');
+      res.status(500).send('Error retrieving league info.');
     }
   });
 

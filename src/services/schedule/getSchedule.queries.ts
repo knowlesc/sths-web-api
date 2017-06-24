@@ -82,6 +82,11 @@ export class ScheduleQueries {
   `;
 
   // WHERE
+  static fromDays = (startDay: number, endDay: number) => `
+    DAY >= ${startDay} AND
+    DAY < ${endDay}
+  `
+
   static nextSimOnly = `
     DAY >= (SELECT ScheduleNextDay FROM LeagueGeneral) AND
     DAY <= (

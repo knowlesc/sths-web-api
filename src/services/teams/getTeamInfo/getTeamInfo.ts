@@ -2,6 +2,7 @@ import { QueryRunner } from '../../../db/queryRunner';
 import { Query } from '../../../db/query';
 import { TeamInfoParams } from '../../../models/teams/teamInfoParams';
 import { TeamInfoQueries as Queries } from './getTeamInfo.queries';
+import { ParamHelper } from '../../paramHelper';
 
 const farmTable = 'TeamFarmInfo';
 const proTable = 'TeamProInfo';
@@ -9,7 +10,10 @@ const proTable = 'TeamProInfo';
 const getWhereConditions = (params: TeamInfoParams) => {
   const conditions = [];
 
-  conditions.push(Queries.hasId(params.id));
+  const id = ParamHelper.parseNumberParam(params.id);
+  if (id >= 0) {
+    conditions.push(Queries.hasId(id));
+  }
 
   return conditions;
 };
@@ -24,7 +28,8 @@ export function getTeamList(params: TeamInfoParams) {
 }
 
 export function getTeamInfo(params: TeamInfoParams) {
-  if (isNaN(parseInt(params.id))) {
+  const id = ParamHelper.parseNumberParam(params.id);
+  if (id < 0) {
     throw new Error('Missing or invalid team ID.');
   }
 

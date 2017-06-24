@@ -5,12 +5,14 @@ import { GetGoalieInfoQueries as Queries } from './getGoalieInfo.queries';
 import { GetGoalieInfoFields as Fields } from './getGoalieInfo.fields';
 import { SortHelper } from '../../sortHelper';
 import { FieldHelper } from '../../fieldHelper';
+import { ParamHelper } from '../../paramHelper';
 
 const getWhereConditions = (params: GoalieInfoParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
+  const team = ParamHelper.parseNumberParam(params.team);
 
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
 

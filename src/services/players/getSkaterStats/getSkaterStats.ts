@@ -1,8 +1,9 @@
 import { QueryRunner } from '../../../db/queryRunner';
 import { Query } from '../../../db/query';
 import { SkaterStatsParams } from '../../../models/players/skaterStatsParams';
-import { SortHelper } from '../../sortHelper';
 import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
+import { SortHelper } from '../../sortHelper';
+import { ParamHelper } from '../../paramHelper';
 
 const proStatTable = 'PlayerProStat';
 const farmStatTable = 'PlayerFarmStat';
@@ -34,12 +35,13 @@ const transformSortField = (field: string, statTable: string):
 const getWhereConditions = (params: SkaterStatsParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
+  const team = ParamHelper.parseNumberParam(params.team);
 
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
   if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasPoints === 'true') { conditions.push(Queries.hasPoints); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
 
   return conditions;
 };

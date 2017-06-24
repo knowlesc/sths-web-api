@@ -5,19 +5,23 @@ import { GetSkaterInfoQueries as Queries } from './getSkaterInfo.queries';
 import { GetSkaterInfoFields as Fields } from './getSkaterInfo.fields';
 import { SortHelper } from '../../sortHelper';
 import { FieldHelper } from '../../fieldHelper';
+import { ParamHelper } from '../../paramHelper';
 
 const getWhereConditions = (params: SkaterInfoParams) => {
   const conditions = [];
-  const league = params.league === 'farm' ? 'farm' : 'pro';
 
   // If an ID is provided, none of the other params apply
-  if (params.id && !isNaN(parseInt(params.id))) {
-    conditions.push(Queries.hasId(params.id));
+  const id = ParamHelper.parseNumberParam(params.id);
+  if (id >= 0) {
+    conditions.push(Queries.hasId(id));
 
     return conditions;
   }
 
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
+  const league = params.league === 'farm' ? 'farm' : 'pro';
+  const team = ParamHelper.parseNumberParam(params.team);
+
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
 
@@ -25,7 +29,8 @@ const getWhereConditions = (params: SkaterInfoParams) => {
 };
 
 export function getSingleSkaterInfo(params: SkaterInfoParams) {
-  if (!params.id || isNaN(parseInt(params.id))) {
+  const id = ParamHelper.parseNumberParam(params.id);
+  if (id < 0) {
     throw new Error('Missing or invalid skater ID.');
   }
 

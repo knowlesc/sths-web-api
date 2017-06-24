@@ -5,14 +5,16 @@ import { TeamStatsQueries as Queries } from './getTeamStats.queries';
 import { TeamStatsFields as Fields } from './getTeamStats.fields';
 import { SortHelper } from '../../sortHelper';
 import { FieldHelper } from '../../fieldHelper';
+import { ParamHelper } from '../../paramHelper';
 
 const proStatTable = 'TeamProStat';
 const farmStatTable = 'TeamFarmStat';
 
 const getWhereConditions = (params: TeamStatsParams) => {
   const conditions = [];
+  const team = ParamHelper.parseNumberParam(params.team);
 
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
 
   return conditions;
 };

@@ -13,7 +13,8 @@ export function scheduleRoutes() {
       limit: req.query.limit,
       skip: req.query.skip,
       sort: req.query.sort,
-      day: req.query.day,
+      startDay: req.query.startDay,
+      endDay: req.query.endDay,
       nextSimOnly: req.query.nextSimOnly,
       league: req.query.league,
       team: req.query.team

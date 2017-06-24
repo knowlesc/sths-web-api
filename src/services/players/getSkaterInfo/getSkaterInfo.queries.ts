@@ -36,7 +36,7 @@ export class GetSkaterInfoQueries {
   `;
 
   // WHERE
-  static hasId = (id: string) => `PlayerInfo.UniqueID = '${parseInt(id)}'`;
+  static hasId = (id: number) => `PlayerInfo.UniqueID = '${id}'`;
   static fromTeam = (teamId: number) => `PlayerInfo.Team = ${teamId}`;
   static fromLeague = (league: string) => league === 'farm' ?
     `PlayerInfo.Status1 <= 1` : // 0 = Farm (scratched), 1 = Farm

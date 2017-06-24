@@ -3,14 +3,19 @@ import { Query } from '../../db/query';
 import { ScheduleParams } from '../../models/schedule/scheduleParams';
 import { ScheduleQueries as Queries } from './getSchedule.queries';
 import { SortHelper } from '../sortHelper';
+import { ParamHelper } from '../paramHelper';
 
 const allowedSortFields = [];
 
 const getWhereConditions = (params: ScheduleParams) => {
   const conditions = [];
+  const startDay = ParamHelper.parseNumberParam(params.startDay);
+  const endDay = ParamHelper.parseNumberParam(params.endDay);
+  const team = ParamHelper.parseNumberParam(params.team);
 
+  if (startDay >= 0 && endDay >= 0 && endDay > startDay) { conditions.push(Queries.fromDays(startDay, endDay)); }
   if (params.nextSimOnly === 'true') { conditions.push(Queries.nextSimOnly); }
-  if (!isNaN(params.team)) { conditions.push(Queries.fromTeam(params.team)); }
+  if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
 
   return conditions;
 };
