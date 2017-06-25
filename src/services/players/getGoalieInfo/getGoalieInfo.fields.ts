@@ -3,13 +3,14 @@ import { GetGoalieInfoQueries } from './getGoalieInfo.queries';
 export class GetGoalieInfoFields {
   static customColumns = {
     'TeamAbbre': `${GetGoalieInfoQueries.teamAbbreFormula} as TeamAbbre`,
+    'TeamName': `${GetGoalieInfoQueries.teamNameFormula} as TeamName`,
     'FreeAgentStatus': `${GetGoalieInfoQueries.freeAgentStatusFormula} as FreeAgentStatus`
   };
 
   static allowedFields = ['Name', 'TeamAbbre', 'AgeDate', 'Condition', 'SK', 'DU',
   'EN', 'SZ', 'AG', 'RB', 'SC', 'HS', 'RT', 'PH', 'PS', 'EX', 'LD', 'PO', 'MO', 'Overall',
-  'AvailableforTrade', 'StarPower', 'Age', 'Rookie', 'Weight', 'Height', 'NoTrade',
-  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3'];
+  'AvailableforTrade', 'StarPower', 'Age', 'Rookie', 'Weight', 'Height', 'NoTrade', 'TeamName',
+  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3', 'UniqueID'];
 
   static getFullColumnDescriptor(field: string): string {
     if (!field) {

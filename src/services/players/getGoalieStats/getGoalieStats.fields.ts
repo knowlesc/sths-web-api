@@ -10,7 +10,7 @@ export class GetGoalieStatsFields {
 
   static allowedFields = ['Name', 'TeamAbbre', 'GP', 'W', 'L', 'OTL', 'PCT', 'GAA',
   'SecondPlay', 'Pim', 'Shootout', 'GA', 'SA', 'A', 'EmptyNetGoal', 'PenaltyShotsPCT',
-  'PenalityShotsShots'];
+  'PenalityShotsShots', 'UniqueID'];
 
   static getFullColumnDescriptor(field: string): string {
     if (!field) {

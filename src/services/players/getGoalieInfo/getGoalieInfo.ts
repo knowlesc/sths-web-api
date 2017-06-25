@@ -19,6 +19,21 @@ const getWhereConditions = (params: GoalieInfoParams) => {
   return conditions;
 };
 
+export function getSingleGoalieInfo(params: GoalieInfoParams) {
+  const id = ParamHelper.parseNumberParam(params.id);
+  if (id < 0) {
+    throw new Error('Missing or invalid goalie ID.');
+  }
+
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
+
+  const query = new Query(select, Queries.fromQuery)
+    .where([Queries.hasId(params.id)]);
+
+    return QueryRunner.runQuerySingle(query);
+}
+
 export function getGoalieInfo(params: GoalieInfoParams) {
   const conditions = getWhereConditions(params);
   const sort = SortHelper.validateAndConvertSort(

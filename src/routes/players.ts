@@ -3,7 +3,8 @@ import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkat
 import { getSingleSkaterInfo, getSkaterInfo, getSkaterInfoCount }
   from '../services/players/getSkaterInfo/getSkaterInfo';
 import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats/getGoalieStats';
-import { getGoalieInfo, getGoalieInfoCount } from '../services/players/getGoalieInfo/getGoalieInfo';
+import { getSingleGoalieInfo, getGoalieInfo, getGoalieInfoCount }
+  from '../services/players/getGoalieInfo/getGoalieInfo';
 import { SkaterStatsParams } from '../models/players/skaterStatsParams';
 import { SkaterInfoParams } from '../models/players/skaterInfoParams';
 import { GoalieStatsParams } from '../models/players/goalieStatsParams';
@@ -65,6 +66,30 @@ export function playersRoutes() {
     } catch (err) {
       log.error(err);
       res.status(500).send('Error retrieving players.');
+    }
+  });
+
+  app.get('/players/goalies/:id', (req: express.Request, res: express.Response) => {
+    const params: GoalieInfoParams = {
+      fields: req.query.fields,
+      id: req.params.id
+    };
+
+    try {
+      getSingleGoalieInfo(params)
+        .then((results) => {
+            if (results) {
+              res.send(results);
+            } else {
+              res.status(404).send();
+            }
+          }, (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving goalie info.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving goalie info.');
     }
   });
 

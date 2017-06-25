@@ -5,6 +5,11 @@ export class GetGoalieInfoQueries {
     WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Abbre
   END`;
 
+  static teamNameFormula = `CASE
+    WHEN GoalerInfo.Status1 <= 1 THEN TeamFarmInfo.Name
+    WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Name
+  END`;
+
   static freeAgentStatusFormula = `CASE
     WHEN GoalerInfo.Age >= (SELECT UFAAge FROM LeagueGeneral) THEN 'UFA'
     WHEN GoalerInfo.Age >= (SELECT RFAAge FROM LeagueGeneral) THEN 'RFA'
@@ -19,6 +24,7 @@ export class GetGoalieInfoQueries {
   `;
 
   // WHERE
+  static hasId = (id: number) => `GoalerInfo.UniqueID = '${id}'`;
   static fromTeam = (teamId: number) => `GoalerInfo.Team = ${teamId}`;
   static fromLeague = (league: string) => league === 'farm' ?
     `GoalerInfo.Status1 <= 1` : // 0 = Farm (scratched), 1 = Farm
