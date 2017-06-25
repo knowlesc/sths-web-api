@@ -7,9 +7,6 @@ import { SortHelper } from '../../sortHelper';
 import { FieldHelper } from '../../fieldHelper';
 import { ParamHelper } from '../../paramHelper';
 
-const proStatTable = 'TeamProStat';
-const farmStatTable = 'TeamFarmStat';
-
 const getWhereConditions = (params: TeamStatsParams) => {
   const conditions = [];
   const team = ParamHelper.parseNumberParam(params.team);
@@ -20,7 +17,10 @@ const getWhereConditions = (params: TeamStatsParams) => {
 };
 
 export function getTeamStats(params: TeamStatsParams) {
-  const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const tablesToUse = params.league === 'farm'
+    ? ['TeamFarmStat', 'TeamFarmInfo']
+    : ['TeamProStat', 'TeamProInfo'];
+
   const conditions = getWhereConditions(params);
   const sort = SortHelper.validateAndConvertSort(
     params.sort, Fields.allowedFields, Fields.getFullColumnName);
@@ -33,15 +33,18 @@ export function getTeamStats(params: TeamStatsParams) {
     .skip(params.skip)
     .orderBy(sort.field, sort.descending);
 
-  return QueryRunner.runQuery(query, statTableToUse);
+  return QueryRunner.runQuery(query, ...tablesToUse);
 }
 
 export function getTeamStatsCount(params: TeamStatsParams) {
-  const statTableToUse = params.league === 'farm' ? farmStatTable : proStatTable;
+  const tablesToUse = params.league === 'farm'
+    ? ['TeamFarmStat', 'TeamFarmInfo']
+    : ['TeamProStat', 'TeamProInfo'];
+
   const conditions = getWhereConditions(params);
 
   const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
-  return QueryRunner.runQuery(query, statTableToUse);
+  return QueryRunner.runQuery(query, ...tablesToUse);
 }
