@@ -2,13 +2,20 @@ import { QueryRunner } from '../../../db/queryRunner';
 import { Query } from '../../../db/query';
 import { LeagueLogParams } from '../../../models/league/leagueLogParams';
 import { GetLeagueLogQueries as Queries } from './getLeagueLog.queries';
+import { TransactionTypes } from '../../../models/league/transactionTypes';
 import { ParamHelper } from '../../paramHelper';
 import { FieldHelper } from '../../fieldHelper';
 
 const getWhereConditions = (params: LeagueLogParams) => {
   const conditions = [];
 
-  let typesToFilterOn = [1, 2, 3, 6];
+  let typesToFilterOn = [
+    TransactionTypes.Trade,
+    TransactionTypes.Injury,
+    TransactionTypes.Waiver,
+    TransactionTypes.Suspension
+  ];
+
   if (params.type) {
     const types = params.type.split(',');
     if (types.length >= 0) {
@@ -17,6 +24,10 @@ const getWhereConditions = (params: LeagueLogParams) => {
   }
 
   conditions.push(Queries.types(typesToFilterOn));
+
+  if (typesToFilterOn.length === 1 && typesToFilterOn[0] === TransactionTypes.Trade) {
+    conditions.push(Queries.tradeFilter);
+  }
 
   return conditions;
 };
@@ -37,9 +48,7 @@ export function getLeagueLogCount(params: LeagueLogParams) {
   const conditions = getWhereConditions(params);
 
   const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
-    .where(conditions)
-    .limit(params.limit)
-    .skip(params.skip);
+    .where(conditions);
 
   return QueryRunner.runQuery(query);
 }
