@@ -4,6 +4,6 @@ export class ParamHelper {
       return -1;
     }
 
-    return param;
+    return parseInt(param.toString());
   }
 }

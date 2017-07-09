@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { getInjuredPlayers } from '../services/players/getInjuredPlayers/getInjuredPlayers';
 import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats/getSkaterStats';
 import { getSingleSkaterInfo, getSkaterInfo, getSkaterInfoCount }
   from '../services/players/getSkaterInfo/getSkaterInfo';
@@ -15,6 +16,22 @@ const log = new Logger('playersRoutes');
 
 export function playersRoutes() {
   const app = express();
+
+  app.get('/players/injured', (req: express.Request, res: express.Response) => {
+    try {
+     getInjuredPlayers()
+        .then((results) => {
+            res.send(results);
+          },
+          (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving injury list.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving injury list.');
+    }
+  });
 
   app.get('/players/skaters/:id', (req: express.Request, res: express.Response) => {
     const params: SkaterInfoParams = {

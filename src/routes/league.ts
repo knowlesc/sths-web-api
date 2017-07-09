@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { getLeagueLog, getLeagueLogCount, LeagueLogParams } from '../services/league/getLeagueLog';
+import { getLeagueLog, getLeagueLogCount } from '../services/league/getLeagueLog/getLeagueLog';
+import { LeagueLogParams } from '../models/league/leagueLogParams';
 import { getLeagueInfo } from '../services/league/getLeagueInfo';
 import { Logger } from '../common/logger';
 
@@ -11,7 +12,8 @@ export function leagueRoutes() {
   app.get('/league/log', (req: express.Request, res: express.Response) => {
     const params: LeagueLogParams = {
       limit: req.query.limit,
-      skip: req.query.skip
+      skip: req.query.skip,
+      type: req.query.type
     };
 
     try {

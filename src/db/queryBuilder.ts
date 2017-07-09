@@ -57,6 +57,17 @@ export class QueryBuilder {
       skipClause(skip));
   }
 
+  static buildUnion(query1: string, query2: string): string {
+    if (!query2) {
+      return query1;
+    }
+
+    return `
+      ${query1}
+        UNION
+      ${query2}`;
+  }
+
   static formatQuery(query: string, ...args: (string | number) []): string {
     let i = 0;
     let regex = new RegExp('\\{' + i.toString() + '\\}', 'g');

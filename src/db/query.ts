@@ -6,6 +6,7 @@ export class Query {
   conditions: string[];
   sort: string;
   sortDescending: boolean;
+  _union: Query;
   _limit: number;
   _skip: number;
 
@@ -20,6 +21,10 @@ export class Query {
     queryString = QueryBuilder.addWhereClause(queryString, this.conditions);
     queryString = QueryBuilder.addOrderBy(queryString, this.sort, this.sortDescending);
     queryString = QueryBuilder.addLimitAndSkip(queryString, this._limit, this._skip);
+
+    if (this._union) {
+      queryString = QueryBuilder.buildUnion(queryString, this._union.toString());
+    }
 
     return queryString;
   }
@@ -64,6 +69,13 @@ export class Query {
     const copy = this.copy();
     copy.sort = sort;
     copy.sortDescending = !!descending;
+
+    return copy;
+  }
+
+  union(query: Query): Query {
+    const copy = this.copy();
+    copy._union = query;
 
     return copy;
   }
