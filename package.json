@@ -24,6 +24,7 @@
     "@types/winston": "^2.3.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "rss-parser": "^2.10.1",
     "sqlite3": "^3.1.8",
     "winston": "^2.3.1",
     "typescript": "^2.2.2"

@@ -8,7 +8,7 @@ const selectQuery = `
 
 const fromQuery = `FROM LeagueGeneral`;
 
-export function getLeagueInfo(): Promise<LeagueInfo> {
+export function getLeagueInfo() {
   const query = new Query(selectQuery, fromQuery);
 
   return QueryRunner.runQuerySingle(query);
