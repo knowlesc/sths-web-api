@@ -20,7 +20,7 @@ export class TeamStatsFields {
     'TotalL10Losses', 'TotalL10Other', 'GP', 'Points', 'GF', 'GA', 'Streak', 'PPGoal',
     'PPAttemp', 'PKAttemp', 'PKGoalGA', 'PKGoalGF', 'Pim', 'Hits', 'PPPCT', 'PKPCT',
     'ShotsFor', 'ShotsAga', 'ShotsBlock', 'StandingPlayoffTitle', 'ROW', 'TotalHomeWins',
-    'TotalHomeLosses', 'TotalHomeOther'];
+    'TotalHomeLosses', 'TotalHomeOther', 'Number'];
 
   static allowedTeamInfoFields = ['Division', 'Conference', 'PlayOffEliminated',
     'DidNotMakePlayoff'];
