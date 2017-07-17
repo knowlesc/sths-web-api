@@ -66,6 +66,9 @@ export class TeamStatsQueries {
   static fromQuery = `
     FROM {0}
       INNER JOIN {1} ON {0}.Number = {1}.UniqueID
+      INNER JOIN RankingOrder LeagueRankingOrder ON {0}.Number = LeagueRankingOrder.{2} AND LeagueRankingOrder.Type = 0
+      INNER JOIN RankingOrder ConferenceRankingOrder ON {0}.Number = ConferenceRankingOrder.{2}
+        AND (ConferenceRankingOrder.Type = 1 OR ConferenceRankingOrder.Type = 2)
   `;
 
   // WHERE

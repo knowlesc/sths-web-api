@@ -13,14 +13,16 @@ export class TeamStatsFields {
     'TotalL10Other': `${TeamStatsQueries.totalL10OtherFormula} as TotalL10Other`,
     'ROW': `${TeamStatsQueries.ROWFormula} as ROW`,
     'PPPCT': `${TeamStatsQueries.ppPctFormujla} as PPPCT`,
-    'PKPCT': `${TeamStatsQueries.pkPctFormujla} as PKPCT`
+    'PKPCT': `${TeamStatsQueries.pkPctFormujla} as PKPCT`,
+    'LeagueRank': 'LeagueRankingOrder.TeamOrder as LeagueRank',
+    'ConferenceRank': 'ConferenceRankingOrder.TeamOrder as ConferenceRank'
   };
 
   static allowedTeamStatFields = ['Name', 'TotalWins', 'TotalLosses', 'TotalOther', 'TotalL10Wins',
     'TotalL10Losses', 'TotalL10Other', 'GP', 'Points', 'GF', 'GA', 'Streak', 'PPGoal',
     'PPAttemp', 'PKAttemp', 'PKGoalGA', 'PKGoalGF', 'Pim', 'Hits', 'PPPCT', 'PKPCT',
     'ShotsFor', 'ShotsAga', 'ShotsBlock', 'StandingPlayoffTitle', 'ROW', 'TotalHomeWins',
-    'TotalHomeLosses', 'TotalHomeOther', 'Number'];
+    'TotalHomeLosses', 'TotalHomeOther', 'Number', 'LeagueRank', 'ConferenceRank'];
 
   static allowedTeamInfoFields = ['Division', 'Conference', 'PlayOffEliminated',
     'DidNotMakePlayoff'];

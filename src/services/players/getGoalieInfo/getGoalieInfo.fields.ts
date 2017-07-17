@@ -7,10 +7,11 @@ export class GetGoalieInfoFields {
     'FreeAgentStatus': `${GetGoalieInfoQueries.freeAgentStatusFormula} as FreeAgentStatus`
   };
 
-  static allowedFields = ['Name', 'TeamAbbre', 'AgeDate', 'Condition', 'SK', 'DU',
+  static allowedFields = ['Name', 'TeamAbbre', 'AgeDate', 'Condition', 'SK', 'DU', 'Injury',
   'EN', 'SZ', 'AG', 'RB', 'SC', 'HS', 'RT', 'PH', 'PS', 'EX', 'LD', 'PO', 'MO', 'Overall',
   'AvailableforTrade', 'StarPower', 'Age', 'Rookie', 'Weight', 'Height', 'NoTrade', 'TeamName',
-  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3', 'UniqueID'];
+  'ForceWaiver', 'Contract', 'FreeAgentStatus', 'Salary1', 'Salary2', 'Salary3', 'UniqueID',
+  'Status1', 'Contract'];
 
   static getFullColumnDescriptor(field: string): string {
     if (!field) {

@@ -17,9 +17,9 @@ const getWhereConditions = (params: TeamStatsParams) => {
 };
 
 export function getTeamStats(params: TeamStatsParams) {
-  const tablesToUse = params.league === 'farm'
-    ? ['TeamFarmStat', 'TeamFarmInfo']
-    : ['TeamProStat', 'TeamProInfo'];
+  const queryParams = params.league === 'farm'
+    ? ['TeamFarmStat', 'TeamFarmInfo', 'TeamFarmNumber']
+    : ['TeamProStat', 'TeamProInfo', 'TeamProNumber'];
 
   const conditions = getWhereConditions(params);
   const sort = SortHelper.validateAndConvertSort(
@@ -33,18 +33,18 @@ export function getTeamStats(params: TeamStatsParams) {
     .skip(params.skip)
     .orderBy(sort.field, sort.descending);
 
-  return QueryRunner.runQuery(query, ...tablesToUse);
+  return QueryRunner.runQuery(query, ...queryParams);
 }
 
 export function getTeamStatsCount(params: TeamStatsParams) {
-  const tablesToUse = params.league === 'farm'
-    ? ['TeamFarmStat', 'TeamFarmInfo']
-    : ['TeamProStat', 'TeamProInfo'];
+  const queryParams = params.league === 'farm'
+    ? ['TeamFarmStat', 'TeamFarmInfo', 'TeamFarmNumber']
+    : ['TeamProStat', 'TeamProInfo', 'TeamProNumber'];
 
   const conditions = getWhereConditions(params);
 
   const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
-  return QueryRunner.runQuery(query, ...tablesToUse);
+  return QueryRunner.runQuery(query, ...queryParams);
 }
