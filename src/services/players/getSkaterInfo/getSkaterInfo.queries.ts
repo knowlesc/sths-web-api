@@ -28,6 +28,9 @@ export class GetSkaterInfoQueries {
     ELSE 'ELC'
   END`;
 
+  static injuryLengthFormula = `
+    ROUND(((95 - PlayerInfo.ConditionDecimal) / (SELECT {0} FROM LeagueGeneral)) - 0.5)`;
+
   // FROM
   static fromQuery = `
     FROM PlayerInfo

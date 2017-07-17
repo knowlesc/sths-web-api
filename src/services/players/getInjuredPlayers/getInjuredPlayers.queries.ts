@@ -3,12 +3,14 @@ export class GetInjuredPlayersQueries {
   static playersFieldsQuery = `
     SELECT PlayerInfo.Name,
       PlayerInfo.UniqueID,
+      ROUND(((95 - ConditionDecimal) / (SELECT ProInjuryRecoverySpeed FROM LeagueGeneral)) - 0.5) as InjuryLength,
       Injury,
       TeamProInfo.Name as Team,
       'skaters' as Type`;
   static goaliesFieldsQuery = `
     SELECT GoalerInfo.Name,
       GoalerInfo.UniqueID,
+      ROUND(((95 - ConditionDecimal) / (SELECT ProInjuryRecoverySpeed FROM LeagueGeneral)) - 0.5) as InjuryLength,
       Injury,
       TeamProInfo.Name as Team,
       'goalies' as Type`;

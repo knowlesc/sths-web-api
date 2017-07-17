@@ -27,11 +27,12 @@ export function getSingleGoalieInfo(params: GoalieInfoParams) {
 
   const select = FieldHelper.generateSelectQuery(
     params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
+  const queryParams = params.league === 'farm' ? 'ProInjuryRecoverySpeed' : 'FarmInjuryRecoverySpeed';
 
   const query = new Query(select, Queries.fromQuery)
     .where([Queries.hasId(params.id)]);
 
-    return QueryRunner.runQuerySingle(query);
+    return QueryRunner.runQuerySingle(query, queryParams);
 }
 
 export function getGoalieInfo(params: GoalieInfoParams) {
@@ -40,6 +41,7 @@ export function getGoalieInfo(params: GoalieInfoParams) {
     params.sort, Fields.allowedFields, Fields.getFullColumnName);
   const select = FieldHelper.generateSelectQuery(
     params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
+  const queryParams = params.league === 'farm' ? 'ProInjuryRecoverySpeed' : 'FarmInjuryRecoverySpeed';
 
   const query = new Query(select, Queries.fromQuery)
     .where(conditions)
@@ -47,7 +49,7 @@ export function getGoalieInfo(params: GoalieInfoParams) {
     .skip(params.skip)
     .orderBy(sort.field, sort.descending);
 
-  return QueryRunner.runQuery(query);
+  return QueryRunner.runQuery(query, queryParams);
 }
 
 export function getGoalieInfoCount(params: GoalieInfoParams) {

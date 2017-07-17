@@ -5,12 +5,13 @@ export class GetSkaterInfoFields {
     'TeamAbbre': `${GetSkaterInfoQueries.teamAbbreFormula} as TeamAbbre`,
     'TeamName': `${GetSkaterInfoQueries.teamNameFormula} as TeamName`,
     'FreeAgentStatus': `${GetSkaterInfoQueries.freeAgentStatusFormula} as FreeAgentStatus`,
-    'Position': `${GetSkaterInfoQueries.positionFormula} as Position`
+    'Position': `${GetSkaterInfoQueries.positionFormula} as Position`,
+    'InjuryLength': `${GetSkaterInfoQueries.injuryLengthFormula} as InjuryLength`
   };
 
   static allowedFields = ['Name', 'Position', 'TeamAbbre', 'Condition', 'CK', 'Status1',
     'FG', 'DI', 'SK', 'ST', 'EN', 'DU', 'PH', 'FO', 'PA', 'SC', 'DF', 'PS', 'EX',
-    'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower', 'Age', 'Injury',
+    'LD', 'PO', 'MO', 'Overall', 'AvailableForTrade', 'StarPower', 'Age', 'Injury', 'InjuryLength',
     'Rookie', 'Weight', 'Height', 'NoTrade', 'ForceWaiver', 'Contract', 'TeamName',
     'FreeAgentStatus', 'AgeDate', 'UniqueID', 'Salary1', 'Salary2', 'Salary3', 'Contract'];
 

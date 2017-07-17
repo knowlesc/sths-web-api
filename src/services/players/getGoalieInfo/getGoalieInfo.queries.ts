@@ -16,6 +16,9 @@ export class GetGoalieInfoQueries {
     ELSE 'ELC'
   END`;
 
+  static injuryLengthFormula = `
+    ROUND(((95 - GoalerInfo.ConditionDecimal) / (SELECT {0} FROM LeagueGeneral)) - 0.5)`;
+
   // FROM
   static fromQuery = `
     FROM GoalerInfo
