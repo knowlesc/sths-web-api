@@ -8,6 +8,7 @@ import { teamsRoutes } from './routes/teams';
 import { scheduleRoutes } from './routes/schedule';
 import { waiversRoutes } from './routes/waivers';
 import { newsRoutes } from './routes/news';
+import { draftRoutes } from './routes/draft';
 import { Logger } from './common/logger';
 
 const log = new Logger('App');
@@ -31,6 +32,7 @@ app.use(teamsRoutes());
 app.use(scheduleRoutes());
 app.use(waiversRoutes());
 app.use(newsRoutes());
+app.use(draftRoutes());
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
