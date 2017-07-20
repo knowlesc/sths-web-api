@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { Logger } from '../common/logger';
+import { getTeamFinances } from '../services/teams/getTeamFinances/getTeamFinances';
 import { getTeamInfo, getTeamList } from '../services/teams/getTeamInfo/getTeamInfo';
 import { getTeamStats, getTeamStatsCount } from '../services/teams/getTeamStats/getTeamStats';
 import { TeamInfoParams } from '../models/teams/teamInfoParams';
@@ -30,9 +31,9 @@ export function teamsRoutes() {
     }
   });
 
-  app.get('/teams/pro/:id', (req: express.Request, res: express.Response) => {
+  app.get('/teams/:league/:id', (req: express.Request, res: express.Response) => {
     const params: TeamInfoParams = {
-      league: 'pro',
+      league: req.params.league,
       id: req.params.id
     };
 
@@ -54,32 +55,27 @@ export function teamsRoutes() {
     }
   });
 
-  app.get('/teams/farm/:id', (req: express.Request, res: express.Response) => {
+  app.get('/teams/:league/:id/finances', (req: express.Request, res: express.Response) => {
     const params: TeamInfoParams = {
-      league: 'farm',
+      league: req.params.league,
       id: req.params.id
     };
 
     try {
-      getTeamInfo(params)
+      getTeamFinances(params)
         .then((results) => {
-            if (results) {
-              res.send(results);
-            } else {
-              res.status(404).send();
-            }
+            res.send(results);
           }, (err) => {
             log.error(err);
-            res.status(500).send('Error retrieving team info.');
+            res.status(500).send('Error retrieving team finances.');
           });
     } catch (err) {
       log.error(err);
-      res.status(500).send('Error retrieving team info.');
+      res.status(500).send('Error retrieving team finances.');
     }
   });
 
   app.get('/stats/teams', (req: express.Request, res: express.Response) => {
-
     const params: TeamStatsParams = {
       league: req.query.league,
       limit: req.query.limit,
