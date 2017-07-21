@@ -22,11 +22,11 @@ export function getTeamFinances(params: TeamInfoParams) {
   }
 
   const conditions = getWhereConditions(params);
-
   const selectQuery = params.league === 'farm' ? Queries.selectFarmFinanceQuery : Queries.selectProFinanceQuery;
+  const tablesToUse = params.league === 'farm' ? ['TeamFarmStat', 'TeamFarmInfo'] : ['TeamProStat', 'TeamProInfo'];
 
   const query = new Query(selectQuery, Queries.fromQuery)
     .where(conditions);
 
-  return QueryRunner.runQuerySingle(query);
+  return QueryRunner.runQuerySingle(query, ...tablesToUse);
 }
