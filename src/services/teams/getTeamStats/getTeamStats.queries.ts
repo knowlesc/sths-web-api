@@ -58,9 +58,9 @@ export class TeamStatsQueries {
       ELSE printf("%.1f", ({0}.PKGoalGA * 100.0 / {0}.PKAttemp))
     END`;
 
-  static ROWFormula = `
-    ({0}.W + {0}.OTW)
-  `;
+  static ROWFormula = `({0}.W + {0}.OTW)`;
+  static GAPGFormula = `round({0}.GA * 1.0 / {0}.GP, 1)`;
+  static GFPGFormula = `round({0}.GF * 1.0 / {0}.GP, 1)`;
 
   // FROM
   static fromQuery = `

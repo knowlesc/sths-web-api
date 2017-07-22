@@ -11,6 +11,8 @@ export class TeamStatsFields {
     'TotalL10Wins': `${TeamStatsQueries.totalL10WinsFormula} as TotalL10Wins`,
     'TotalL10Losses': `${TeamStatsQueries.totalL10LossesFormula} as TotalL10Losses`,
     'TotalL10Other': `${TeamStatsQueries.totalL10OtherFormula} as TotalL10Other`,
+    'GAPG': `${TeamStatsQueries.GAPGFormula} as GAPG`,
+    'GFPG': `${TeamStatsQueries.GFPGFormula} as GFPG`,
     'ROW': `${TeamStatsQueries.ROWFormula} as ROW`,
     'PPPCT': `${TeamStatsQueries.ppPctFormujla} as PPPCT`,
     'PKPCT': `${TeamStatsQueries.pkPctFormujla} as PKPCT`,
@@ -22,7 +24,7 @@ export class TeamStatsFields {
     'TotalL10Losses', 'TotalL10Other', 'GP', 'Points', 'GF', 'GA', 'Streak', 'PPGoal',
     'PPAttemp', 'PKAttemp', 'PKGoalGA', 'PKGoalGF', 'Pim', 'Hits', 'PPPCT', 'PKPCT',
     'ShotsFor', 'ShotsAga', 'ShotsBlock', 'StandingPlayoffTitle', 'ROW', 'TotalHomeWins',
-    'TotalHomeLosses', 'TotalHomeOther', 'Number', 'LeagueRank', 'ConferenceRank'];
+    'TotalHomeLosses', 'TotalHomeOther', 'Number', 'LeagueRank', 'ConferenceRank', 'GAPG', 'GFPG'];
 
   static allowedTeamInfoFields = ['Division', 'Conference', 'PlayOffEliminated',
     'DidNotMakePlayoff'];
