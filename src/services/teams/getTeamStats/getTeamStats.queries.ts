@@ -46,13 +46,15 @@ export class TeamStatsQueries {
       ELSE ({0}.Last10T)
     END`;
 
-  static ppPctFormujla = `
+  static pointsPctFormula = `({0}.Points * 1.0) / ({0}.GP * 2)`;
+
+  static ppPctFormula = `
     CASE
       WHEN {0}.PPAttemp = 0 THEN null
       ELSE printf("%.1f", ({0}.PPGoal * 100.0 / {0}.PPAttemp))
     END`;
 
-  static pkPctFormujla = `
+  static pkPctFormula = `
     CASE
       WHEN {0}.PKAttemp = 0 THEN null
       ELSE printf("%.1f", ({0}.PKGoalGA * 100.0 / {0}.PKAttemp))

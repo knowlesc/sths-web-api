@@ -14,15 +14,16 @@ export class TeamStatsFields {
     'GAPG': `${TeamStatsQueries.GAPGFormula} as GAPG`,
     'GFPG': `${TeamStatsQueries.GFPGFormula} as GFPG`,
     'ROW': `${TeamStatsQueries.ROWFormula} as ROW`,
-    'PPPCT': `${TeamStatsQueries.ppPctFormujla} as PPPCT`,
-    'PKPCT': `${TeamStatsQueries.pkPctFormujla} as PKPCT`,
+    'PointsPCT': `${TeamStatsQueries.pointsPctFormula} as PointsPCT`,
+    'PPPCT': `${TeamStatsQueries.ppPctFormula} as PPPCT`,
+    'PKPCT': `${TeamStatsQueries.pkPctFormula} as PKPCT`,
     'LeagueRank': 'LeagueRankingOrder.TeamOrder as LeagueRank',
     'ConferenceRank': 'ConferenceRankingOrder.TeamOrder as ConferenceRank'
   };
 
   static allowedTeamStatFields = ['Name', 'TotalWins', 'TotalLosses', 'TotalOther', 'TotalL10Wins',
     'TotalL10Losses', 'TotalL10Other', 'GP', 'Points', 'GF', 'GA', 'Streak', 'PPGoal',
-    'PPAttemp', 'PKAttemp', 'PKGoalGA', 'PKGoalGF', 'Pim', 'Hits', 'PPPCT', 'PKPCT',
+    'PPAttemp', 'PKAttemp', 'PKGoalGA', 'PKGoalGF', 'Pim', 'Hits', 'PPPCT', 'PKPCT', 'PointsPCT',
     'ShotsFor', 'ShotsAga', 'ShotsBlock', 'StandingPlayoffTitle', 'ROW', 'TotalHomeWins',
     'TotalHomeLosses', 'TotalHomeOther', 'Number', 'LeagueRank', 'ConferenceRank', 'GAPG', 'GFPG'];
 
