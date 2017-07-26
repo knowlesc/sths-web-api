@@ -9,6 +9,7 @@ export class Query {
   _union: Query;
   _limit: number;
   _skip: number;
+  _with: string;
 
   constructor(base: string, from: string) {
     this.query = base;
@@ -24,6 +25,10 @@ export class Query {
 
     if (this._union) {
       queryString = QueryBuilder.buildUnion(queryString, this._union.toString());
+    }
+
+    if (this._with) {
+      queryString = this._with + queryString;
     }
 
     return queryString;
@@ -80,11 +85,22 @@ export class Query {
     return copy;
   }
 
+  with(queryString: string): Query {
+    const copy = this.copy();
+    copy._with = queryString;
+
+    return copy;
+  }
+
   private copy() {
     const other = new Query(this.query, this.from);
     other.conditions = this.conditions;
     other._limit = this._limit;
     other._skip = this._skip;
+    other._with = this._with;
+    other._union = this._union;
+    other.sort = this.sort;
+    other.sortDescending = this.sortDescending;
 
     return other;
   }

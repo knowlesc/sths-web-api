@@ -1,11 +1,13 @@
 import * as express from 'express';
 import { getInjuredPlayers } from '../services/players/getInjuredPlayers/getInjuredPlayers';
+import { getPlayersByName, getPlayersByNameCount } from '../services/players/getPlayersByName/getPlayersByName';
 import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats/getSkaterStats';
 import { getSingleSkaterInfo, getSkaterInfo, getSkaterInfoCount }
   from '../services/players/getSkaterInfo/getSkaterInfo';
 import { getGoalieStats, getGoalieStatsCount } from '../services/players/getGoalieStats/getGoalieStats';
 import { getSingleGoalieInfo, getGoalieInfo, getGoalieInfoCount }
   from '../services/players/getGoalieInfo/getGoalieInfo';
+import { PlayerSearchParams } from '../models/players/playerSearchParams';
 import { SkaterStatsParams } from '../models/players/skaterStatsParams';
 import { SkaterInfoParams } from '../models/players/skaterInfoParams';
 import { GoalieStatsParams } from '../models/players/goalieStatsParams';
@@ -30,6 +32,29 @@ export function playersRoutes() {
     } catch (err) {
       log.error(err);
       res.status(500).send('Error retrieving injury list.');
+    }
+  });
+
+  app.get('/players/search', (req: express.Request, res: express.Response) => {
+    const params: PlayerSearchParams = {
+      name: req.query.name,
+      limit: req.query.limit,
+      skip: req.query.skip
+    };
+
+    try {
+      Promise.all([getPlayersByName(params), getPlayersByNameCount(params)])
+        .then(([players, count]) => {
+            const totalResults = (count as { count: string }[])[0].count;
+            res.setHeader('X-Total-Count', totalResults);
+            res.send(players);
+          }, (err) => {
+            log.error(err);
+            res.status(500).send('Error searching players.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error searching players.');
     }
   });
 
