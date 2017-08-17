@@ -1,10 +1,9 @@
-export class GetInjuredPlayersQueries {
+export class GetSuspendedPlayersQueries {
   // SELECT
   static playersFieldsQuery = `
     SELECT PlayerInfo.Name,
       PlayerInfo.UniqueID,
-      ROUND(((95 - ConditionDecimal) / (SELECT ProInjuryRecoverySpeed FROM LeagueGeneral)) - 0.5) as InjuryLength,
-      Injury,
+      Suspension,
       CASE
         WHEN PlayerInfo.Status1 >= 2 THEN TeamProInfo.Name
         ELSE TeamFarmInfo.Name
@@ -17,8 +16,7 @@ export class GetInjuredPlayersQueries {
   static goaliesFieldsQuery = `
     SELECT GoalerInfo.Name,
       GoalerInfo.UniqueID,
-      ROUND(((95 - ConditionDecimal) / (SELECT ProInjuryRecoverySpeed FROM LeagueGeneral)) - 0.5) as InjuryLength,
-      Injury,
+      Suspension,
       CASE
         WHEN GoalerInfo.Status1 >= 2 THEN TeamProInfo.Name
         ELSE TeamFarmInfo.Name
@@ -40,5 +38,5 @@ export class GetInjuredPlayersQueries {
       INNER JOIN TeamFarmInfo on GoalerInfo.Team = TeamFarmInfo.Number`;
 
   // WHERE
-  static hasInjury = `Injury IS NOT NULL AND Injury != ""`;
+  static hasSuspension = `Suspension IS NOT NULL AND Suspension > 0`;
 }

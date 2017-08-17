@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { getInjuredPlayers } from '../services/players/getInjuredPlayers/getInjuredPlayers';
+import { getSuspendedPlayers } from '../services/players/getSuspendedPlayers/getSuspendedPlayers';
 import { getPlayersByName, getPlayersByNameCount } from '../services/players/getPlayersByName/getPlayersByName';
 import { getSkaterStats, getSkaterStatsCount } from '../services/players/getSkaterStats/getSkaterStats';
 import { getSingleSkaterInfo, getSkaterInfo, getSkaterInfoCount }
@@ -32,6 +33,22 @@ export function playersRoutes() {
     } catch (err) {
       log.error(err);
       res.status(500).send('Error retrieving injury list.');
+    }
+  });
+
+  app.get('/players/suspended', (req: express.Request, res: express.Response) => {
+    try {
+     getSuspendedPlayers()
+        .then((results) => {
+            res.send(results);
+          },
+          (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving suspension list.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving suspension list.');
     }
   });
 
