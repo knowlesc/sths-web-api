@@ -57,7 +57,7 @@ export class TeamStatsQueries {
   static pkPctFormula = `
     CASE
       WHEN {0}.PKAttemp = 0 THEN null
-      ELSE printf("%.1f", ({0}.PKGoalGA * 100.0 / {0}.PKAttemp))
+      ELSE printf("%.1f", (100.0 - ({0}.PKGoalGA * 100.0 / {0}.PKAttemp)))
     END`;
 
   static ROWFormula = `({0}.W + {0}.OTW)`;
