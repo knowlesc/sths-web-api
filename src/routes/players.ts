@@ -191,7 +191,8 @@ export function playersRoutes() {
       limit: req.query.limit,
       skip: req.query.skip,
       sort: req.query.sort,
-      team: req.query.team
+      team: req.query.team,
+      fields: req.query.fields
     };
 
     try {

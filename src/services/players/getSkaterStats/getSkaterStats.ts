@@ -2,8 +2,10 @@ import { QueryRunner } from '../../../db/queryRunner';
 import { Query } from '../../../db/query';
 import { SkaterStatsParams } from '../../../models/players/skaterStatsParams';
 import { GetSkaterStatsQueries as Queries } from './getSkaterStats.queries';
+import { GetSkaterStatsFields as Fields } from './getSkaterStats.fields';
 import { SortHelper } from '../../sortHelper';
 import { ParamHelper } from '../../paramHelper';
+import { FieldHelper } from '../../fieldHelper';
 
 const proStatTable = 'PlayerProStat';
 const farmStatTable = 'PlayerFarmStat';
@@ -51,8 +53,10 @@ export function getSkaterStats(params: SkaterStatsParams) {
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
   const sort = transformSortField(params.sort, statTableToUse);
+  const select = FieldHelper.generateSelectQuery(
+    params.fields, Fields.allowedFields, Fields.getFullColumnDescriptor);
 
-  const query = new Query(Queries.allFieldsQuery, Queries.fromQuery)
+  const query = new Query(select, Queries.fromQuery)
     .where(conditions)
     .limit(params.limit)
     .skip(params.skip)
@@ -66,7 +70,7 @@ export function getSkaterStatsCount(params: SkaterStatsParams) {
   const teamTableToUse = params.league === 'farm' ? farmTeamTable : proTeamTable;
   const conditions = getWhereConditions(params);
 
-  const query = new Query(Queries.totalResultsQuery, Queries.fromQuery)
+  const query = new Query(FieldHelper.totalResultsQuery, Queries.fromQuery)
     .where(conditions);
 
   return QueryRunner.runQuery(query, statTableToUse, teamTableToUse);

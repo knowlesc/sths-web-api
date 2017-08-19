@@ -7,4 +7,5 @@ export interface SkaterStatsParams {
   limit?: number;
   skip?: number;
   sort?: string;
+  fields?: string;
 }
