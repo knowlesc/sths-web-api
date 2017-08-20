@@ -34,7 +34,6 @@ describe('getSkaterStats', () => {
       expect(query._limit).not.to.exist;
       expect(query._skip).not.to.exist;
       expect(query.sort).not.to.exist;
-      expect(query.query).to.equal(GetSkaterStatsQueries.allFieldsQuery);
       expect(query.from).to.equal(GetSkaterStatsQueries.fromQuery);
       expect(query.conditions.length).to.equal(0);
     });
@@ -125,7 +124,6 @@ describe('getSkaterStats', () => {
       expect(query._limit).not.to.exist;
       expect(query._skip).not.to.exist;
       expect(query.sort).not.to.exist;
-      expect(query.query).to.equal(GetSkaterStatsQueries.totalResultsQuery);
       expect(query.from).to.equal(GetSkaterStatsQueries.fromQuery);
       expect(query.conditions.length).to.equal(0);
     });

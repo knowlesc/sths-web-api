@@ -30,10 +30,9 @@ export class GetGoalieStatsQueries {
 
     return `${currentlyOnTeam} OR ${hasPlayedForTeam}`;
   }
+  static hasPlayedMinimumGames = (minimumGames: number) =>
+    `{0}.GP >= ${minimumGames}`
 
   static hasTeam = `(GoalerInfo.Team > 0)`;
   static hasSavePercentage = `(PCT > 0)`;
-  static hasPlayedMinimumGames = `
-    {0}.GP >= (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)
-  `;
 }

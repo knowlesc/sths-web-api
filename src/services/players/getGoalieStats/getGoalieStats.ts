@@ -18,9 +18,10 @@ const getWhereConditions = (params: GoalieStatsParams) => {
   const conditions = [];
   const league = params.league === 'farm' ? 'farm' : 'pro';
   const team = ParamHelper.parseNumberParam(params.team);
+  const minimumGames = ParamHelper.parseNumberParam(params.hasPlayedMinimumGames);
 
   if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
-  if (params.hasPlayedMinimumGames === 'true') { conditions.push(Queries.hasPlayedMinimumGames); }
+  if (minimumGames >= 0) { conditions.push(Queries.hasPlayedMinimumGames(minimumGames)); }
   if (params.hasSavePercentage === 'true') { conditions.push(Queries.hasSavePercentage); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
