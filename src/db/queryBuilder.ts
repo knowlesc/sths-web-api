@@ -23,11 +23,11 @@ export class QueryBuilder {
   static buildQueryDynamic(...args: string[]): string {
     let query = '';
 
-    for (let i = 0; i < args.length; i++) {
+    for (const arg of args) {
       if (!query) {
-        query = args[i];
+        query = arg;
       } else {
-        query += ' ' + args[i];
+        query += ' ' + arg;
       }
     }
 

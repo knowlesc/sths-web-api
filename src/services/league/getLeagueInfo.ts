@@ -3,7 +3,7 @@ import { Query } from '../../db/query';
 import { LeagueInfo } from '../../models/league/leagueInfo';
 
 const selectQuery = `
-  SELECT ScheduleNextDay, DefaultSimulationPerDay
+  SELECT ScheduleNextDay, DefaultSimulationPerDay, PlayOffStarted, PlayOffRound
 `;
 
 const fromQuery = `FROM LeagueGeneral`;

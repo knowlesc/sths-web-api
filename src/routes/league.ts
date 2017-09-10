@@ -2,6 +2,8 @@ import * as express from 'express';
 import { getLeagueLog, getLeagueLogCount } from '../services/league/getLeagueLog/getLeagueLog';
 import { LeagueLogParams } from '../models/league/leagueLogParams';
 import { getLeagueInfo } from '../services/league/getLeagueInfo';
+import { getPlayoffStandings } from '../services/playoffs/getPlayoffStandings';
+import { PlayoffStandingsParams } from './../models/playoffs/PlayoffStandingsParams';
 import { Logger } from '../common/logger';
 
 const log = new Logger('leagueRoutes');
@@ -46,6 +48,26 @@ export function leagueRoutes() {
     } catch (err) {
       log.error(err);
       res.status(500).send('Error retrieving league info.');
+    }
+  });
+
+  app.get('/league/playoffStandings', (req: express.Request, res: express.Response) => {
+    const params: PlayoffStandingsParams = {
+      league: req.query.league
+    };
+
+    try {
+      getPlayoffStandings(params)
+        .then((results) => {
+            res.send(results);
+          },
+          (err) => {
+            log.error(err);
+            res.status(500).send('Error retrieving playoff standings.');
+          });
+    } catch (err) {
+      log.error(err);
+      res.status(500).send('Error retrieving playoff standings.');
     }
   });
 
