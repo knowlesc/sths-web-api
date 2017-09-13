@@ -8,4 +8,5 @@ export interface SkaterStatsParams {
   skip?: number;
   sort?: string;
   fields?: string;
+  position?: string;
 }

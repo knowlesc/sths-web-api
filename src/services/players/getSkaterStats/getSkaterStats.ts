@@ -44,6 +44,7 @@ const getWhereConditions = (params: SkaterStatsParams) => {
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasPoints === 'true') { conditions.push(Queries.hasPoints); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
+  if (params.position) { conditions.push(Queries.hasPosition(params.position)); }
 
   return conditions;
 };

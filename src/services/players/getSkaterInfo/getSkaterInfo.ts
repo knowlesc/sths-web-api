@@ -24,6 +24,7 @@ const getWhereConditions = (params: SkaterInfoParams) => {
   if (team >= 0) { conditions.push(Queries.fromTeam(team)); }
   if (params.league) { conditions.push(Queries.fromLeague(league)); }
   if (params.hasTeam === 'true') { conditions.push(Queries.hasTeam); }
+  if (params.position) { conditions.push(Queries.hasPosition(params.position)); }
 
   return conditions;
 };

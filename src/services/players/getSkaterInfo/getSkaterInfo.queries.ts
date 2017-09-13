@@ -45,4 +45,11 @@ export class GetSkaterInfoQueries {
     `PlayerInfo.Status1 <= 1` : // 0 = Farm (scratched), 1 = Farm
     `PlayerInfo.Status1 >= 2` // 2 = Pro (scratched), 3 = Pro
   static hasTeam = `PlayerInfo.Team > 0`;
+  static hasPosition = (position: string) => {
+    if (['LW', 'C', 'RW', 'D'].indexOf(position) >= 0) {
+      return `PlayerInfo.Pos${position} = 'True'`;
+    } else {
+      return null;
+    }
+  }
 }

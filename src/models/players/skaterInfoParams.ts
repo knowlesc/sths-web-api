@@ -8,4 +8,5 @@ export interface SkaterInfoParams {
   sort?: string;
   fields?: string;
   id?: number;
+  position?: string;
 }

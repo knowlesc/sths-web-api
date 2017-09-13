@@ -37,4 +37,11 @@ export class GetSkaterStatsQueries {
   static hasPoints = `{0}.P > 0`;
   static hasTeam = `PlayerInfo.Team > 0`;
   static hasPlayedMinimumGames = `{0}.GP >= (SELECT ProMinimumGamePlayerLeader FROM LeagueOutputOption LIMIT 1)`;
+  static hasPosition = (position: string) => {
+    if (['LW', 'C', 'RW', 'D'].indexOf(position) >= 0) {
+      return `PlayerInfo.Pos${position} = 'True'`;
+    } else {
+      return null;
+    }
+  }
 }
