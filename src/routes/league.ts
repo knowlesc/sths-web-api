@@ -3,7 +3,7 @@ import { getLeagueLog, getLeagueLogCount } from '../services/league/getLeagueLog
 import { LeagueLogParams } from '../models/league/leagueLogParams';
 import { getLeagueInfo } from '../services/league/getLeagueInfo';
 import { getPlayoffStandings } from '../services/playoffs/getPlayoffStandings';
-import { PlayoffStandingsParams } from './../models/playoffs/PlayoffStandingsParams';
+import { PlayoffStandingsParams } from './../models/playoffs/playoffStandingsParams';
 import { Logger } from '../common/logger';
 
 const log = new Logger('leagueRoutes');
